@@ -23,7 +23,7 @@
 	<key>keyEquivalent</key>
 	<string>@K</string>
 	<key>name</key>
-	<string>Compile File</string>
+	<string>Load File</string>
 	<key>output</key>
 	<string>showAsHTML</string>
 	<key>scope</key>
