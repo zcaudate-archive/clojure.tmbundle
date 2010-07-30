@@ -6,8 +6,10 @@
 	<string>nop</string>
 	<key>command</key>
 	<string>cake eval "
-  (in-ns 'user)
-  (println \"&lt;pre&gt;\" (repl-utils/get-source '$TM_SELECTED_TEXT) \"&lt;/pre&gt;\")"</string>
+  (do
+    (in-ns 'user)
+    (require '[clojure.contrib.repl-utils :as repl-utils])
+    (println \"&lt;pre&gt;\" (repl-utils/get-source '$TM_SELECTED_TEXT) \"&lt;/pre&gt;\"))"</string>
 	<key>fallbackInput</key>
 	<string>word</string>
 	<key>input</key>
