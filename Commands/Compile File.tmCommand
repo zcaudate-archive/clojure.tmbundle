@@ -15,7 +15,7 @@
       (-&gt; path-to-file
           (string/replace \".clj\" \"\")
           load))
-    (println \"Done\"))"</string>
+    (println \"Compilation finished.\"))"</string>
 	<key>fallbackInput</key>
 	<string>line</string>
 	<key>input</key>
