@@ -5,7 +5,13 @@
 	<key>beforeRunningCommand</key>
 	<string>nop</string>
 	<key>command</key>
-	<string>cake eval "(println (do (in-ns 'user) (defonce *current-namespace* (atom nil)) (reset! *current-namespace* (or (find-ns (symbol \"$TM_SELECTED_TEXT\")) (find-ns 'user)))))"</string>
+	<string>cake eval "
+   (println 
+     (do 
+       (in-ns 'user) 
+       (defonce *current-namespace* (atom nil)) 
+       (reset! *current-namespace* (or (find-ns (symbol \"$TM_SELECTED_TEXT\")) 
+                                       (find-ns 'user)))))"</string>
 	<key>input</key>
 	<string>selection</string>
 	<key>keyEquivalent</key>

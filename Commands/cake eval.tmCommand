@@ -20,7 +20,7 @@
           in-ns))
     (clojure.core/println 
       (clojure.core/str \"&lt;pre&gt;\"
-           $TM_SELECTED_TEXT
+           ${TM_SELECTED_TEXT:-$TM_CURRENT_LINE}
            \"&lt;/pre&gt;\")))"</string>
 	<key>fallbackInput</key>
 	<string>line</string>

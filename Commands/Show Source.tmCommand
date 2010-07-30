@@ -9,7 +9,7 @@
   (do
     (in-ns 'user)
     (require '[clojure.contrib.repl-utils :as repl-utils])
-    (println \"&lt;pre&gt;\" (repl-utils/get-source '$TM_SELECTED_TEXT) \"&lt;/pre&gt;\"))"</string>
+    (println (repl-utils/get-source '${TM_SELECTED_TEXT:-$TM_CURRENT_WORD})))"</string>
 	<key>fallbackInput</key>
 	<string>word</string>
 	<key>input</key>
@@ -19,7 +19,7 @@
 	<key>name</key>
 	<string>Show Source</string>
 	<key>output</key>
-	<string>showAsHTML</string>
+	<string>showAsTooltip</string>
 	<key>scope</key>
 	<string>source.clojure</string>
 	<key>uuid</key>
