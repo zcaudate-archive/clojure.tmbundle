@@ -5,20 +5,18 @@
 	<key>beforeRunningCommand</key>
 	<string>nop</string>
 	<key>command</key>
-	<string>cake eval "(println (do (in-ns 'user) $TM_SELECTED_TEXT))"</string>
-	<key>fallbackInput</key>
-	<string>line</string>
+	<string># just to remind you of some useful environment variables
+# see Help / Environment Variables for the full list
+echo File: "$TM_FILEPATH"
+echo Word: "$TM_CURRENT_WORD"
+echo Selection: "$TM_SELECTED_TEXT"</string>
 	<key>input</key>
 	<string>selection</string>
-	<key>keyEquivalent</key>
-	<string>@X</string>
 	<key>name</key>
-	<string>cake eval</string>
+	<string>Show Source</string>
 	<key>output</key>
-	<string>showAsHTML</string>
-	<key>scope</key>
-	<string>source.clojure</string>
+	<string>replaceSelectedText</string>
 	<key>uuid</key>
-	<string>CB13E6ED-64B4-430F-8177-4456D5232B99</string>
+	<string>E5274BF4-942E-41B8-B5F6-6E0CAD35D64B</string>
 </dict>
 </plist>
