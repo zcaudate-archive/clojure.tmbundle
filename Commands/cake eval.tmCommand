@@ -6,10 +6,23 @@
 	<string>nop</string>
 	<key>command</key>
 	<string>cake eval "
-  (println 
-    (str \"&lt;pre&gt;\"
-         (do (in-ns 'user) $TM_SELECTED_TEXT)
-         \"&lt;/pre&gt;\"))"</string>
+  (do
+    (in-ns 'cake)
+    (clojure.core/refer 'clojure.core)
+    (require '[clojure.string :as string])
+    (let [user-dir (str (System/getProperty \"user.dir\") \"/src/\")
+          path-to-file (string/replace \"$TM_FILEPATH\" user-dir \"\")]
+      (-&gt; path-to-file
+          (string/replace \".clj\" \"\")
+          (string/replace \"_\" \"-\")
+          (string/replace \"/\" \".\")
+          symbol
+          in-ns))
+    (clojure.core/refer 'clojure.core)
+    (println 
+      (str \"&lt;pre&gt;\"
+           $TM_SELECTED_TEXT
+           \"&lt;/pre&gt;\")))"</string>
 	<key>fallbackInput</key>
 	<string>line</string>
 	<key>input</key>
