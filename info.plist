@@ -2,6 +2,40 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>mainMenu</key>
+	<dict>
+		<key>items</key>
+		<array>
+			<string>4ABFCFE8-BBCA-4BF3-8F86-CA838E08D5CE</string>
+			<string>D5D1FD46-35B5-4A3A-89B9-7628E1B87CA9</string>
+		</array>
+		<key>submenus</key>
+		<dict>
+			<key>4ABFCFE8-BBCA-4BF3-8F86-CA838E08D5CE</key>
+			<dict>
+				<key>items</key>
+				<array>
+					<string>4401F964-39DF-4C03-AB7E-9654BF185B7D</string>
+				</array>
+				<key>name</key>
+				<string>Cake</string>
+			</dict>
+			<key>D5D1FD46-35B5-4A3A-89B9-7628E1B87CA9</key>
+			<dict>
+				<key>items</key>
+				<array>
+					<string>CB13E6ED-64B4-430F-8177-4456D5232B99</string>
+					<string>A685EDA6-CB80-4F99-87E5-38E53ED1F0A9</string>
+					<string>E5274BF4-942E-41B8-B5F6-6E0CAD35D64B</string>
+					<string>FCF29461-95F8-44B3-AD5C-C8AD74A1A3B5</string>
+					<string>4BAA6473-1980-42B8-B068-C3BE57295913</string>
+					<string>1811A2F3-E45B-4DBB-93B9-6904DC2B5A81</string>
+				</array>
+				<key>name</key>
+				<string>REPL</string>
+			</dict>
+		</dict>
+	</dict>
 	<key>name</key>
 	<string>Clojure</string>
 	<key>ordering</key>
@@ -12,6 +46,9 @@
 		<string>CB13E6ED-64B4-430F-8177-4456D5232B99</string>
 		<string>A685EDA6-CB80-4F99-87E5-38E53ED1F0A9</string>
 		<string>E5274BF4-942E-41B8-B5F6-6E0CAD35D64B</string>
+		<string>FCF29461-95F8-44B3-AD5C-C8AD74A1A3B5</string>
+		<string>4BAA6473-1980-42B8-B068-C3BE57295913</string>
+		<string>1811A2F3-E45B-4DBB-93B9-6904DC2B5A81</string>
 	</array>
 	<key>uuid</key>
 	<string>6B2BD209-0142-4CA6-A596-9250015AD8CA</string>

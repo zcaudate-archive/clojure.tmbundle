@@ -29,7 +29,7 @@
 	<key>keyEquivalent</key>
 	<string>@X</string>
 	<key>name</key>
-	<string>cake eval</string>
+	<string>Eval</string>
 	<key>output</key>
 	<string>showAsHTML</string>
 	<key>scope</key>
