@@ -18,9 +18,8 @@
           (string/replace \"/\" \".\")
           symbol
           in-ns))
-    (clojure.core/refer 'clojure.core)
-    (println 
-      (str \"&lt;pre&gt;\"
+    (clojure.core/println 
+      (clojure.core/str \"&lt;pre&gt;\"
            $TM_SELECTED_TEXT
            \"&lt;/pre&gt;\")))"</string>
 	<key>fallbackInput</key>
