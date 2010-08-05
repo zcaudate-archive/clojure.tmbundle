@@ -5,11 +5,7 @@
 	<key>beforeRunningCommand</key>
 	<string>nop</string>
 	<key>command</key>
-	<string># just to remind you of some useful environment variables
-# see Help / Environment Variables for the full list
-echo File: "$TM_FILEPATH"
-echo Word: "$TM_CURRENT_WORD"
-echo Selection: "$TM_SELECTED_TEXT"</string>
+	<string>cake eval "(println \"$TM_BUNDLE_SUPPORT\" \"$TM_CURRENT_WORD\")"</string>
 	<key>fallbackInput</key>
 	<string>word</string>
 	<key>input</key>
@@ -19,9 +15,9 @@ echo Selection: "$TM_SELECTED_TEXT"</string>
 	<key>name</key>
 	<string>Macroexpand</string>
 	<key>output</key>
-	<string>showAsTooltip</string>
+	<string>showAsHTML</string>
 	<key>scope</key>
-	<string>source.clj</string>
+	<string>source.clojure</string>
 	<key>uuid</key>
 	<string>4BAA6473-1980-42B8-B068-C3BE57295913</string>
 </dict>

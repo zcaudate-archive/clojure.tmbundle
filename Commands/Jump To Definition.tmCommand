@@ -5,9 +5,21 @@
 	<key>beforeRunningCommand</key>
 	<string>nop</string>
 	<key>command</key>
-	<string>cake eval "(
-println
-$TM_SELECTED_TEXT)"</string>
+	<string>cake eval "
+  (do
+    (in-ns 'cake)
+    (clojure.core/refer 'clojure.core)
+    (require '[clojure.string :as string])
+    (let [user-dir (str (System/getProperty \"user.dir\") \"/src/\")
+          path-to-file (string/replace \"$TM_FILEPATH\" user-dir \"\")]
+      (-&gt; path-to-file
+          (string/replace \".clj\" \"\")
+          (string/replace \"_\" \"-\")
+          (string/replace \"/\" \".\")
+          symbol
+          in-ns))
+    (let [{:keys [file line]} (meta '$TM_SELECTED_TEXT)]
+      (println (str \"txt://open?url=file:///\" )))" | open</string>
 	<key>input</key>
 	<string>selection</string>
 	<key>keyEquivalent</key>
@@ -15,7 +27,7 @@ $TM_SELECTED_TEXT)"</string>
 	<key>name</key>
 	<string>Jump To Definition</string>
 	<key>output</key>
-	<string>showAsHTML</string>
+	<string>discard</string>
 	<key>scope</key>
 	<string>source.clojure</string>
 	<key>uuid</key>

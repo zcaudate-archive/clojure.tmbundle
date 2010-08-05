@@ -21,7 +21,7 @@ echo Selection: "$TM_SELECTED_TEXT"</string>
 	<key>output</key>
 	<string>showAsTooltip</string>
 	<key>scope</key>
-	<string>source.clj</string>
+	<string>source.clojure</string>
 	<key>uuid</key>
 	<string>1811A2F3-E45B-4DBB-93B9-6904DC2B5A81</string>
 </dict>
