@@ -10,7 +10,7 @@ Install with:
     $ git clone git://github.com/mmcgrana/textmate-clojure.git Clojure.tmbundle
     $ osascript -e 'tell app "TextMate" to reload bundles'
 
-## Cake Integeration
+## Cake Integration
 
 This fork adds quite a few commands via [`cake`](http://github.com/ninjudd/cake.git) which make the TextMate
 experience considerably more "Lispy".
