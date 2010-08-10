@@ -6,14 +6,13 @@
 	<dict>
 		<key>items</key>
 		<array>
-			<string>4401F964-39DF-4C03-AB7E-9654BF185B7D</string>
-			<string>------------------------------------</string>
 			<string>CB13E6ED-64B4-430F-8177-4456D5232B99</string>
 			<string>A685EDA6-CB80-4F99-87E5-38E53ED1F0A9</string>
 			<string>E5274BF4-942E-41B8-B5F6-6E0CAD35D64B</string>
 			<string>FCF29461-95F8-44B3-AD5C-C8AD74A1A3B5</string>
 			<string>4BAA6473-1980-42B8-B068-C3BE57295913</string>
 			<string>1811A2F3-E45B-4DBB-93B9-6904DC2B5A81</string>
+			<string>6C33FB7B-EDD3-4AFF-8C6E-10AA6ECE3B8C</string>
 		</array>
 		<key>submenus</key>
 		<dict/>
@@ -24,7 +23,6 @@
 	<array>
 		<string>6A87759F-F746-4E84-B788-965B46363202</string>
 		<string>3C7566E1-E339-4F14-813D-12B3EA6A38BD</string>
-		<string>4401F964-39DF-4C03-AB7E-9654BF185B7D</string>
 		<string>CB13E6ED-64B4-430F-8177-4456D5232B99</string>
 		<string>6C33FB7B-EDD3-4AFF-8C6E-10AA6ECE3B8C</string>
 		<string>A685EDA6-CB80-4F99-87E5-38E53ED1F0A9</string>
