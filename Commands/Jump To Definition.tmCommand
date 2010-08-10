@@ -20,8 +20,12 @@
             symbol
             in-ns))
        (in-ns 'user))
-    (let [{:keys [file line]} (meta '$TM_SELECTED_TEXT)]
-      (println (str \"txt://open?url=file:///\" )))" | open</string>
+    (let [{:keys [file line]} (clojure.core/meta #'$TM_SELECTED_TEXT)]
+      (clojure.core/println file line)
+      (clojure.core/let [resource (.getResource (clojure.lang.RT/baseLoader) file)]
+    	   (if (clojure.core/= (.getProtocol resource) \"jar\")
+          (clojure.core/println \"a jar\")
+          (clojure.core/println \"a file\")))))"</string>
 	<key>input</key>
 	<string>selection</string>
 	<key>keyEquivalent</key>
@@ -29,7 +33,7 @@
 	<key>name</key>
 	<string>Jump To Definition</string>
 	<key>output</key>
-	<string>discard</string>
+	<string>showAsHTML</string>
 	<key>scope</key>
 	<string>source.clojure</string>
 	<key>uuid</key>
