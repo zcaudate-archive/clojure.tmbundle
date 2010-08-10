@@ -22,21 +22,20 @@
     (clojure.core/println
       (clojure.core/str 
            \"&lt;pre&gt;\"
-           ${TM_SELECTED_TEXT:-$TM_CURRENT_LINE}
+           (pprint/with-pprint-dispatch pprint/code-dispatch 
+              (pprint/write ${TM_SELECTED_TEXT:-$TM_CURRENT_LINE} :pretty true :stream nil))
            \"&lt;/pre&gt;\")))"</string>
-	<key>fallbackInput</key>
-	<string>line</string>
 	<key>input</key>
 	<string>selection</string>
 	<key>keyEquivalent</key>
-	<string>@X</string>
+	<string>~@X</string>
 	<key>name</key>
-	<string>Eval</string>
+	<string>Eval pprint</string>
 	<key>output</key>
 	<string>showAsHTML</string>
 	<key>scope</key>
 	<string>source.clojure</string>
 	<key>uuid</key>
-	<string>CB13E6ED-64B4-430F-8177-4456D5232B99</string>
+	<string>6C33FB7B-EDD3-4AFF-8C6E-10AA6ECE3B8C</string>
 </dict>
 </plist>

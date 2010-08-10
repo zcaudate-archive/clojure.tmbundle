@@ -18,9 +18,14 @@
           (string/replace \"/\" \".\")
           symbol
           in-ns))
-    (require 'clojure.contrib.pprint)
-    (clojure.contrib.pprint/with-pprint-dispatch clojure.contrib.pprint/*code-dispatch*
-           (clojure.contrib.pprint/pprint (clojure.core/macroexpand '${TM_SELECTED_TEXT:-$TM_CURRENT_LINE}))))"</string>
+    (require '[clojure.pprint :as pprint])
+    (println
+      (str 
+       \"&lt;pre&gt;\" 
+       (pprint/with-pprint-dispatch pprint/code-dispatch
+         (binding [pprint/*print-suppress-namespaces* true]
+          (pprint/write (clojure.core/macroexpand '${TM_SELECTED_TEXT:-$TM_CURRENT_LINE}) :pretty true :stream nil)))
+       \"&lt;/pre&gt;\")))"</string>
 	<key>fallbackInput</key>
 	<string>word</string>
 	<key>input</key>
@@ -30,7 +35,7 @@
 	<key>name</key>
 	<string>Macroexpand</string>
 	<key>output</key>
-	<string>showAsTooltip</string>
+	<string>showAsHTML</string>
 	<key>scope</key>
 	<string>source.clojure</string>
 	<key>uuid</key>

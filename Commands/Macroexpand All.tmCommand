@@ -5,11 +5,28 @@
 	<key>beforeRunningCommand</key>
 	<string>nop</string>
 	<key>command</key>
-	<string># just to remind you of some useful environment variables
-# see Help / Environment Variables for the full list
-echo File: "$TM_FILEPATH"
-echo Word: "$TM_CURRENT_WORD"
-echo Selection: "$TM_SELECTED_TEXT"</string>
+	<string>cake eval "
+  (do
+    (in-ns 'cake)
+    (clojure.core/refer 'clojure.core)
+    (require '[clojure.string :as string])
+    (let [user-dir (str (System/getProperty \"user.dir\") \"/src/\")
+          path-to-file (string/replace \"$TM_FILEPATH\" user-dir \"\")]
+      (-&gt; path-to-file
+          (string/replace \".clj\" \"\")
+          (string/replace \"_\" \"-\")
+          (string/replace \"/\" \".\")
+          symbol
+          in-ns))
+    (require '[clojure.pprint :as pprint])
+    (require '[clojure.contrib.macro-utils :as macro-utils])
+    (println
+      (str 
+       \"&lt;pre&gt;\" 
+       (pprint/with-pprint-dispatch pprint/code-dispatch
+         (binding [pprint/*print-suppress-namespaces* true]
+          (pprint/write (macro-utils/mexpand-all '${TM_SELECTED_TEXT:-$TM_CURRENT_LINE}) :pretty true :stream nil)))
+       \"&lt;/pre&gt;\")))"</string>
 	<key>fallbackInput</key>
 	<string>word</string>
 	<key>input</key>
@@ -19,7 +36,7 @@ echo Selection: "$TM_SELECTED_TEXT"</string>
 	<key>name</key>
 	<string>Macroexpand All</string>
 	<key>output</key>
-	<string>showAsTooltip</string>
+	<string>showAsHTML</string>
 	<key>scope</key>
 	<string>source.clojure</string>
 	<key>uuid</key>

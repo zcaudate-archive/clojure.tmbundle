@@ -18,8 +18,8 @@
           (string/replace \"/\" \".\")
           symbol
           in-ns))
-    (require '[clojure.contrib.repl-utils :as cake-repl-utils])
-    (println (cake-repl-utils/get-source '${TM_SELECTED_TEXT:-$TM_CURRENT_WORD})))"</string>
+    (clojure.core/require '[clojure.contrib.repl-utils :as cake-repl-utils])
+    (clojure.core/println (cake-repl-utils/get-source '${TM_SELECTED_TEXT:-$TM_CURRENT_WORD})))"</string>
 	<key>fallbackInput</key>
 	<string>word</string>
 	<key>input</key>

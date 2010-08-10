@@ -15,7 +15,7 @@
       (-&gt; path-to-file
           (string/replace \".clj\" \"\")
           load))
-    (println \"Compilation finished.\"))"</string>
+    (clojure.core/println \"Compilation finished.\"))"</string>
 	<key>fallbackInput</key>
 	<string>line</string>
 	<key>input</key>
