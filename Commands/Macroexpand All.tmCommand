@@ -10,14 +10,16 @@
     (in-ns 'cake)
     (clojure.core/refer 'clojure.core)
     (require '[clojure.string :as string])
-    (let [user-dir (str (System/getProperty \"user.dir\") \"/src/\")
-          path-to-file (string/replace \"$TM_FILEPATH\" user-dir \"\")]
-      (-&gt; path-to-file
-          (string/replace \".clj\" \"\")
-          (string/replace \"_\" \"-\")
-          (string/replace \"/\" \".\")
-          symbol
-          in-ns))
+    (if (not (= \"$TM_FILEPATH\" \"\"))
+      (let [user-dir (str (System/getProperty \"user.dir\") \"/src/\")
+            path-to-file (string/replace \"$TM_FILEPATH\" user-dir \"\")]
+        (-&gt; path-to-file
+            (string/replace \".clj\" \"\")
+            (string/replace \"_\" \"-\")
+            (string/replace \"/\" \".\")
+            symbol
+            in-ns))
+       (in-ns 'user))
     (require '[clojure.pprint :as pprint])
     (require '[clojure.contrib.macro-utils :as macro-utils])
     (println

@@ -10,12 +10,15 @@
     (in-ns 'cake)
     (clojure.core/refer 'clojure.core)
     (require '[clojure.string :as string])
-    (let [user-dir (str (System/getProperty \"user.dir\") \"/src/\")
-          path-to-file (string/replace \"$TM_FILEPATH\" user-dir \"\")]
-      (-&gt; path-to-file
-          (string/replace \".clj\" \"\")
-          load))
-    (clojure.core/println \"Compilation finished.\"))"</string>
+    (if (not (= \"$TM_FILEPATH\" \"\"))
+      (do
+        (let [user-dir (str (System/getProperty \"user.dir\") \"/src/\")
+              path-to-file (string/replace \"$TM_FILEPATH\" user-dir \"\")]
+          (-&gt; path-to-file
+              (string/replace \".clj\" \"\")
+              load))
+        (clojure.core/println \"Compilation finished.\"))
+      (clojure.core/println \"No file.\")))"</string>
 	<key>fallbackInput</key>
 	<string>line</string>
 	<key>input</key>
