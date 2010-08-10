@@ -18,7 +18,7 @@ First you need to install cake.
 
     sudo gem install cake
 
-Once installed you can create a file and select the Clojure mode. It's recommended (though not necessary) that you run <code>cake repl</code> at the command line before running the Clojure mode commands. The cake REPL has excellent autocompletion features and it's handy to make back and forth between your file and interacting at the REPL.
+Once installed you can create a file and select the Clojure mode. It's recommended (though not necessary) that you run <code>cake repl</code> at the command line before running the Clojure mode commands. The cake REPL has excellent autocompletion features and it's handy and fun to move back and forth between your source file and interacting at the REPL - welcome to the power of Lisp! :)
 
 The following commands are available:
 
