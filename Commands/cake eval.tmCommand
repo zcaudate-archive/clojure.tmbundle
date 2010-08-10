@@ -18,9 +18,11 @@
           (string/replace \"/\" \".\")
           symbol
           in-ns))
-    (clojure.core/println 
+    (require '[clojure.pprint :as pprint])
+    (println
       (clojure.core/str \"&lt;pre&gt;\"
-           ${TM_SELECTED_TEXT:-$TM_CURRENT_LINE}
+           (pprint/with-pprint-dispatch pprint/code-dispatch 
+              (pprint/write ${TM_SELECTED_TEXT:-$TM_CURRENT_LINE} :pretty true :stream nil))
            \"&lt;/pre&gt;\")))"</string>
 	<key>fallbackInput</key>
 	<string>line</string>
