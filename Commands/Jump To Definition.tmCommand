@@ -26,6 +26,8 @@
     	   (if (clojure.core/= (.getProtocol resource) \"jar\")
           (clojure.core/println \"a jar\")
           (clojure.core/println \"a file\")))))"</string>
+	<key>fallbackInput</key>
+	<string>word</string>
 	<key>input</key>
 	<string>selection</string>
 	<key>keyEquivalent</key>
