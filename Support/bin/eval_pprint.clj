@@ -7,8 +7,11 @@
 
 (enter-file-ns true) ; if file not loaded enter user ns
 
+(clojure.core/require '[clojure.pprint :as pprint])
 (clojure.core/println
   (clojure.core/str 
        "<pre>"
-       (clojure.core/eval (clojure.core/read-string (bake/*env* "TM_SELECTED_TEXT")))
+       (pprint/with-pprint-dispatch pprint/code-dispatch 
+          (pprint/write (clojure.core/eval (clojure.core/read-string (bake/*env* "TM_SELECTED_TEXT"))) 
+            :pretty true :stream nil))
        "</pre>"))

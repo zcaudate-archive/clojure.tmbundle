@@ -5,20 +5,7 @@
 	<key>beforeRunningCommand</key>
 	<string>nop</string>
 	<key>command</key>
-	<string>cake eval "
-  (do
-    (in-ns 'cake)
-    (clojure.core/refer 'clojure.core)
-    (require '[clojure.string :as string])
-    (if (not (= \"$TM_FILEPATH\" \"\"))
-      (do
-        (let [user-dir (str (System/getProperty \"user.dir\") \"/src/\")
-              path-to-file (string/replace \"$TM_FILEPATH\" user-dir \"\")]
-          (-&gt; path-to-file
-              (string/replace \".clj\" \"\")
-              load))
-        (clojure.core/println \"Compilation finished.\"))
-      (clojure.core/println \"No file.\")))"</string>
+	<string>load_file.clj</string>
 	<key>fallbackInput</key>
 	<string>line</string>
 	<key>input</key>

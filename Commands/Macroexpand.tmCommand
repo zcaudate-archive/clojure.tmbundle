@@ -5,29 +5,7 @@
 	<key>beforeRunningCommand</key>
 	<string>nop</string>
 	<key>command</key>
-	<string>cake eval "
-  (do
-    (in-ns 'cake)
-    (clojure.core/refer 'clojure.core)
-    (require '[clojure.string :as string])
-    (if (not (= \"$TM_FILEPATH\" \"\"))
-      (let [user-dir (str (System/getProperty \"user.dir\") \"/src/\")
-            path-to-file (string/replace \"$TM_FILEPATH\" user-dir \"\")]
-        (-&gt; path-to-file
-            (string/replace \".clj\" \"\")
-            (string/replace \"_\" \"-\")
-            (string/replace \"/\" \".\")
-            symbol
-            in-ns))
-       (in-ns 'user))
-    (require '[clojure.pprint :as pprint])
-    (println
-      (str 
-       \"&lt;pre&gt;\" 
-       (pprint/with-pprint-dispatch pprint/code-dispatch
-         (binding [pprint/*print-suppress-namespaces* true]
-          (pprint/write (clojure.core/macroexpand '${TM_SELECTED_TEXT:-$TM_CURRENT_LINE}) :pretty true :stream nil)))
-       \"&lt;/pre&gt;\")))"</string>
+	<string>macroexpand.clj</string>
 	<key>fallbackInput</key>
 	<string>word</string>
 	<key>input</key>

@@ -7,8 +7,9 @@
 
 (enter-file-ns true) ; if file not loaded enter user ns
 
+(clojure.core/require '[clojure.contrib.repl-utils :as repl-utils])
 (clojure.core/println
-  (clojure.core/str 
-       "<pre>"
-       (clojure.core/eval (clojure.core/read-string (bake/*env* "TM_SELECTED_TEXT")))
-       "</pre>"))
+  (str
+    "<pre>"
+    (repl-utils/get-source (symbol (bake/*env* "TM_SELECTED_TEXT")))
+    "</pre>"))

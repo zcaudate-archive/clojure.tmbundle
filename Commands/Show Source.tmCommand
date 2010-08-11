@@ -5,23 +5,7 @@
 	<key>beforeRunningCommand</key>
 	<string>nop</string>
 	<key>command</key>
-	<string>cake eval "
-  (do
-    (in-ns 'cake)
-    (clojure.core/refer 'clojure.core)
-    (require '[clojure.string :as string])
-    (if (not (= \"$TM_FILEPATH\" \"\"))
-      (let [user-dir (str (System/getProperty \"user.dir\") \"/src/\")
-            path-to-file (string/replace \"$TM_FILEPATH\" user-dir \"\")]
-        (-&gt; path-to-file
-            (string/replace \".clj\" \"\")
-            (string/replace \"_\" \"-\")
-            (string/replace \"/\" \".\")
-            symbol
-            in-ns))
-       (in-ns 'user))
-    (clojure.core/require '[clojure.contrib.repl-utils :as cake-repl-utils])
-    (clojure.core/println (cake-repl-utils/get-source '${TM_SELECTED_TEXT:-$TM_CURRENT_WORD})))"</string>
+	<string>show_source.clj</string>
 	<key>fallbackInput</key>
 	<string>word</string>
 	<key>input</key>
@@ -31,7 +15,7 @@
 	<key>name</key>
 	<string>Show Source</string>
 	<key>output</key>
-	<string>showAsTooltip</string>
+	<string>showAsHTML</string>
 	<key>scope</key>
 	<string>source.clojure</string>
 	<key>uuid</key>
