@@ -18,7 +18,7 @@ First you need to install cake.
 
     sudo gem install cake
 
-Once installed you can create a file and select the Clojure mode. It's recommended (though not necessary) that you run <code>cake repl</code> at the command line before running the Clojure mode commands. The cake REPL has excellent autocompletion features and it's handy and fun to move back and forth between your source file and interacting at the REPL - welcome to the power of Lisp! :)
+Once installed you can create a file and select the Clojure mode. You should first run <code>cake repl</code> at the command line before running any of the Clojure mode commands in order to avoid any weirdness. In general this is the recommended way of working. A quick tutorial follows.
 
 The following commands are available:
 
@@ -28,6 +28,19 @@ The following commands are available:
 * Show Source : shows the source of the selected function in a new window.
 * Macroexpand : macroexpands the selected s-expression.
 * Macroexpand all : fully macroexpands the selected s-expression.
-* Jump to definition : jump to the source file where the selected var is defined.
 
 Note that if you didn't start a REPL first at the command line the very first time you run any cake command it will probably take a couple of seconds. This is the JVM warming up. After that things should be very, very fast thanks to cake's persistent VMs.
+
+## REPL Style Development
+
+Coding in Lisp is a very interactive experience. Even if you're used to other languages that have good REPLs (Python, Ruby, Haskell), none are quite as interactive as a competent Lisp REPL.
+
+First launch Terminal.app and run the following in a new window:
+
+<pre class="console">
+cake repl
+</pre>
+
+After a couple of seconds you should get a REPL. If you already ran this command once before you should be dropped into a REPL immediately.
+
+Create a new file and select the Clojure mode. Type in the expression <code>(4 + 5)</code>. Select this and run the Eval command (Shift-Command-X). You should get a new window with the number 9 in it.

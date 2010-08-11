@@ -19,3 +19,7 @@
               path-to-file (string/replace tm-filepath user-dir "")]
           (in-ns (symbol (filepath->ns-str path-to-file))))
         (in-ns 'user)))))
+        
+(defn get-last-sexpr [])
+(defn get-enclosing-sexpr [])
+(defn get-current-symbol [])
