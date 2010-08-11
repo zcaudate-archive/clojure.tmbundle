@@ -45,4 +45,4 @@ cake repl
 
 After a couple of seconds you should get a REPL. If you already ran this command once before you should be dropped into a REPL immediately.
 
-Create a new file and select the Clojure mode. Type in the expression <code>(4 + 5)</code>. Select this and run the Eval command (Shift-Command-X). You should get a new window with the number 9 in it.
+Create a new file and select the Clojure mode. Type in the expression <code>(+ 4 5)</code>. Select this and run the Eval command (Shift-Command-X). You should get a new window with the number 9 in it.
