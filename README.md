@@ -7,7 +7,7 @@ Based on a previous Clojure bundle by [`stephenroller`](http://github.com/stephe
 Install with:
 
     $ cd ~/Library/Application\ Support/TextMate/Bundles
-    $ git clone git://github.com/mmcgrana/textmate-clojure.git Clojure.tmbundle
+    $ git clone git://github.com/swannodette/textmate-clojure.git Clojure.tmbundle
     $ osascript -e 'tell app "TextMate" to reload bundles'
 
 ## Cake Integration
