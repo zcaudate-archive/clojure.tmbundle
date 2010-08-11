@@ -1,0 +1,7 @@
+* support loading files that are not in projects (single segment namespaces)
+* get-last-sexpr
+* get-enclosing-sexpr
+* get-current-symbol
+* Jump To Definition command
+* Wrap all commands in try/catch and print pretty stacktraces on failure
+* Link stacktraces to source files via txmt://... urls
