@@ -27,7 +27,7 @@
   []
   [(bake/*env* "TM_FILEPATH")
     (dec (Integer/parseInt (bake/*env* "TM_LINE_NUMBER")))
-    (dec (Integer/parseInt (bake/*env* "TM_LINE_INDEX")))])
+    (Integer/parseInt (bake/*env* "TM_LINE_INDEX"))])
 
 (defn text-before-carret []
   (let [[path,line-index,column-index] (carret-info)
