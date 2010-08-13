@@ -16,14 +16,14 @@
       
 (defn file-ns []
   (let [forms (-> (bake/*env* "TM_FILEPATH") slurp text-forms)
-        [ns-fn ns] (first (for [f forms :when (#{"ns" "in-ns"} (str (first f)))] 
-                    [(first f) (second f)]))]                                          
+        [ns-fn ns] (first (for [f forms :when (and (seq? f) (#{"ns" "in-ns"} (str (first f))))] 
+                    [(first f) (second f)]))]                                                          
     (if ns  
       (if (= (str ns-fn) "ns") ns (eval ns))
       'user)))
       
 (defn enter-ns [ns]
-  (println (str "Entering " ns))
+  #_(println (str "Entering " ns))
   (in-ns ns))      
         
 (defn enter-file-ns []
@@ -33,8 +33,9 @@
 (defmacro eval-in-file-ns [& forms]
   `(let [old-ns# *ns*]
     (enter-file-ns)
-    ~@forms
-    (enter-ns (-> old-ns# str symbol))))       
+    (let [r# ~@forms]
+      (enter-ns (-> old-ns# str symbol))
+      r#)))       
       
       
 (defn project-relative-src-path []  

@@ -6,12 +6,11 @@
 
 (let  [before (text-before-carret)
        forms  (clojure.core/read-string (str "[" before "]"))
-       form (last forms)]
-   (eval-in-file-ns
-     (clojure.core/println
-       (clojure.core/str 
+       form-to-eval (last forms)]
+     (println
+       (str 
           "<pre>"
-             (clojure.core/eval form))
+          (eval-in-file-ns (clojure.core/eval form-to-eval))                    
           "</pre>")))       
        
 
