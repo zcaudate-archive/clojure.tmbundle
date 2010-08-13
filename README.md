@@ -48,3 +48,5 @@ Create a new file and select the Clojure mode in TextMate. Type in the expressio
 ## Tips
 
 In order to get proper word movement in Clojure you might want to set your Word Characters to <code>_/-.:</code> in the Text Editing tab of the TextMate Preferences window.
+
+For an even more SLIME like experience you could install [`Visor`](http://visor.binaryage.com/) so that switching to the REPL is just a key-stroke away.
