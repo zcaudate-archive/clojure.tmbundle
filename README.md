@@ -12,7 +12,7 @@ Install with:
 
 ## Cake Integration
 
-This fork adds quite a few commands via [`cake`](http://github.com/ninjudd/cake.git) which makes the TextMate experience considerably more "Lispy".
+This fork adds quite a few commands via [`cake`](http://github.com/ninjudd/cake) which makes the TextMate experience considerably more "Lispy".
 
 First you need to install cake.
 
@@ -44,3 +44,7 @@ cake repl
 After a couple (or several) seconds you should get a REPL. If you've already run this command once before you should be dropped into a REPL immediately. Only the first time will be slow.
 
 Create a new file and select the Clojure mode in TextMate. Type in the expression <code>(+ 4 5)</code>. Select this and run the Eval command (Command-Shift-X). You should get a new window with the number 9 in it.
+
+## Tips
+
+In order to get proper word movement in Clojure you might want to set your Word Characters to <code>_/-.:</code> in the Text Editing tab of the TextMate Preferences window.
