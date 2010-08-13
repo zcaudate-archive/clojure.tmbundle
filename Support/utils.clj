@@ -20,6 +20,13 @@
               path-to-file (string/replace tm-filepath user-dir "")]
           (in-ns (symbol (filepath->ns-str path-to-file))))
         (in-ns 'user)))))
+
+(defmacro eval-in-file-ns 
+  "evaluates forms as though in file namespace or user if 
+   file doesn't have explicit namespace"
+  [& forms]
+  `(do (enter-file-ns)
+      ~forms))        
         
 (defn carret-info 
   "returns [path line-index column-index] info
@@ -27,17 +34,15 @@
   []
   [(bake/*env* "TM_FILEPATH")
     (dec (Integer/parseInt (bake/*env* "TM_LINE_NUMBER")))
-    (Integer/parseInt (bake/*env* "TM_LINE_INDEX"))])
+    (Integer/parseInt (bake/*env* "TM_LINE_INDEX"))])      
 
 (defn text-before-carret []
   (let [[path,line-index,column-index] (carret-info)
         lines (-> path io/reader line-seq)]
-     (println lines)
      (apply str 
-       (conj
-          (apply concat (take line-index lines))
-          (take column-index (nth lines (inc line-index)))))))    
-
+       (apply str (for [l (take line-index lines)] (str l "\n")))
+       (.substring #^String (nth lines line-index) 0 column-index))))    
+        
         
 (defn get-last-sexpr [])
 (defn get-enclosing-sexpr [])
