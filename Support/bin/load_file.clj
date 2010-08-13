@@ -9,10 +9,6 @@
   (if (not (= tm-filepath ""))
     (do
       (swap! *compiled-files* conj tm-filepath)
-      (let [user-dir (str (System/getProperty "user.dir") "/src/")
-            path-to-file (string/replace tm-filepath user-dir "")]
-        (-> path-to-file
-            (string/replace ".clj" "")
-            load))
+      (load-file tm-filepath)
       (clojure.core/println "Compilation finished."))
     (clojure.core/println "No file.")))

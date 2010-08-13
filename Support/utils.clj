@@ -11,22 +11,37 @@
       (string/replace "_" "-")
       (string/replace "/" ".")))
 
-(defn enter-file-ns 
-  ([] (enter-file-ns false))
-  ([ensure-loaded]
-    (let [tm-filepath (bake/*env* "TM_FILEPATH")]
-      (if (or (not ensure-loaded) (some @*compiled-files* #{tm-filepath}))
-        (let [user-dir (str (System/getProperty "user.dir") "/src/")
-              path-to-file (string/replace tm-filepath user-dir "")]
-          (in-ns (symbol (filepath->ns-str path-to-file))))
-        (in-ns 'user)))))
-
-(defmacro eval-in-file-ns 
-  "evaluates forms as though in file namespace or user if 
-   file doesn't have explicit namespace"
-  [& forms]
-  `(do (enter-file-ns)
-      ~forms))        
+(defn text-forms [t]
+  (read-string (str "[" t "]")))
+      
+(defn file-ns []
+  (let [forms (-> (bake/*env* "TM_FILEPATH") slurp text-forms)
+        [ns-fn ns] (first (for [f forms :when (#{"ns" "in-ns"} (str (first f)))] 
+                    [(first f) (second f)]))]                                          
+    (if ns  
+      (if (= (str ns-fn) "ns") ns (eval ns))
+      'user)))
+      
+(defn enter-ns [ns]
+  (println (str "Entering " ns))
+  (in-ns ns))      
+        
+(defn enter-file-ns []
+  (let [ns (file-ns)]
+    (enter-ns ns)))     
+    
+(defmacro eval-in-file-ns [& forms]
+  `(let [old-ns# *ns*]
+    (enter-file-ns)
+    ~@forms
+    (enter-ns (-> old-ns# str symbol))))       
+      
+      
+(defn project-relative-src-path []  
+   (let [user-dir (str (bake/*env* "TM_PROJECT_DIRECTORY") "/src/")
+        path-to-file (string/replace (bake/*env* "TM_FILEPATH")  user-dir "")]
+  path-to-file))      
+    
         
 (defn carret-info 
   "returns [path line-index column-index] info

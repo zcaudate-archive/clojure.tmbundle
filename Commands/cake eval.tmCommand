@@ -5,7 +5,8 @@
 	<key>beforeRunningCommand</key>
 	<string>nop</string>
 	<key>command</key>
-	<string>eval.clj</string>
+	<string>cd $TM_PROJECT_DIRECTORY
+cake run "$TM_BUNDLE_SUPPORT/bin/eval.clj"</string>
 	<key>fallbackInput</key>
 	<string>none</string>
 	<key>input</key>
