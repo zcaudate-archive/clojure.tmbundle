@@ -5,6 +5,9 @@
 (require '[clojure.java.io :as io])
 (load-file (str (io/file (bake/*env* "TM_BUNDLE_SUPPORT") "utils.clj")))
 
+(defn my-thing []
+  (inc 1))
+
 (clojure.core/println
   (clojure.core/str 
      "<pre>"

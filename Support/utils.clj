@@ -60,6 +60,7 @@
   path-to-file))      
     
         
+        
 (defn carret-info 
   "returns [path line-index column-index] info
    about current location of cursor"
@@ -74,6 +75,20 @@
      (apply str 
        (apply str (for [l (take line-index lines)] (str l "\n")))
        (.substring #^String (nth lines line-index) 0 column-index))))    
+
+
+(defn text-after-carret []
+ (let [[path,line-index,column-index] (carret-info)
+       lines (-> path io/reader line-seq)]
+    (apply str 
+      (.substring #^String (nth lines line-index) column-index)
+      (apply str (for [l (drop (inc line-index) lines)] (str l "\n"))))))    
+      
+;(defn make-cannonical-form-text [t]
+;  (.replaceAll #^String t "\\s+" " "))      
+  
+;(defn str-escape [t]
+;  (.replaceAll #^String t "\\n" "\\n"))  
                 
 (defn get-last-sexpr 
   "Get last sexpr before carret"
