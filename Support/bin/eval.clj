@@ -5,9 +5,8 @@
 (require '[clojure.java.io :as io])
 (load-file (str (io/file (bake/*env* "TM_BUNDLE_SUPPORT") "utils.clj")))
 
-(textmate/eval-in-file-ns
-  (clojure.core/println
-    (clojure.core/str 
-       "<pre>"
-       (clojure.core/eval (clojure.core/read-string (bake/*env* "TM_SELECTED_TEXT")))
-       "</pre>")))
+(clojure.core/println
+  (clojure.core/str 
+     "<pre>"
+     (textmate/eval-in-file-ns (clojure.core/eval (get-selected-sexpr)))
+     "</pre>"))
