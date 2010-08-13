@@ -4,8 +4,8 @@
 (load-file (str (io/file (bake/*env* "TM_BUNDLE_SUPPORT") "utils.clj")))
 (use 'clojure.java.io)
 
-(println "#After: " (text-before-carret) "#")
-(println "#Form: "  (text-forms (text-after-carret)))
+;(println "#After: " (text-before-carret) "#")
+;(println "#Form: "  (text-forms (text-after-carret)))
 
 (println
  (str 
