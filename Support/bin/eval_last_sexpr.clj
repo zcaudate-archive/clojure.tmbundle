@@ -3,9 +3,12 @@
 (clojure.core/refer 'clojure.core)
 (load-file (str (io/file (bake/*env* "TM_BUNDLE_SUPPORT") "utils.clj")))
 (use 'clojure.java.io)
-
 ;(println "#After: " (text-before-carret) "#")
 ;(println "#Form: "  (text-forms (text-after-carret)))
+
+(defn do-stuff []
+	(inc 1)) 
+
 
 (println
  (str 

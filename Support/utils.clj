@@ -13,12 +13,14 @@
       (string/replace "_" "-")
       (string/replace "/" ".")))
 
+
 (defn text-forms 
   "Wrap the forms in text t in a vector. Used
   for all the eval functions"
   [t]
-  (read-string (str "[" t "]")))
-      
+  (read-string (str "[" t "]")))      
+
+
 (defn file-ns 
   "Find the namespace of a file; searches for the first ns  (or in-ns) form
    in the file and returns that symbol. Defaults to 'user if one can't be found"
@@ -29,18 +31,21 @@
     (if ns  
       (if (= (str ns-fn) "ns") ns (eval ns))
       'user)))
+
       
 (defn enter-ns 
   "Enter a ns, wrapped for debugging purposes"
   [ns]
   #_(println (str "Entering " ns))
-  (in-ns ns))      
-        
+  (in-ns ns))              
+
+
 (defn enter-file-ns 
   "Enter the ns of the file"
   []
   (let [ns (file-ns)]
     (enter-ns ns)))     
+
     
 (defmacro eval-in-file-ns 
   "For the current file, enter the ns (if any)
@@ -51,16 +56,14 @@
     (enter-file-ns)
     (let [r# ~@forms]
       (enter-ns (-> old-ns# str symbol))
-      r#)))       
-      
+      r#)))            
+
       
 (defn project-relative-src-path []  
    (let [user-dir (str (bake/*env* "TM_PROJECT_DIRECTORY") "/src/")
         path-to-file (string/replace (bake/*env* "TM_FILEPATH")  user-dir "")]
   path-to-file))      
-    
-        
-        
+                   
 (defn carret-info 
   "returns [path line-index column-index] info
    about current location of cursor"
@@ -75,6 +78,7 @@
      (apply str 
        (apply str (for [l (take line-index lines)] (str l "\n")))
        (.substring #^String (nth lines line-index) 0 column-index))))    
+
 
 
 (defn text-after-carret []
