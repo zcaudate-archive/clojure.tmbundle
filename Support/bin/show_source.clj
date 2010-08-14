@@ -1,4 +1,4 @@
-#!/usr/bin/env cake
+#!/usr/bin/env cake run
 (in-ns 'textmate)
 (clojure.core/refer 'clojure.core)
 (require '[clojure.string :as string])
