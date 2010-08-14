@@ -87,6 +87,7 @@
     (apply str 
       (.substring #^String (nth lines line-index) column-index)
       (apply str (for [l (drop (inc line-index) lines)] (str l "\n"))))))    
+
       
 ;(defn make-cannonical-form-text [t]
 ;  (.replaceAll #^String t "\\s+" " "))      
@@ -100,11 +101,15 @@
   (let [last (-> (text-before-carret) text-forms last)]
    #_(println "Last SEXPR" last)
    last))
+
   
 (defn get-selected-sexpr 
   "Get highlighted sexpr"
   []
   (-> "TM_SELECTED_TEXT" bake/*env* clojure.core/read-string))
   
+
+
 (defn get-enclosing-sexpr [])
+
 (defn get-current-symbol [])
