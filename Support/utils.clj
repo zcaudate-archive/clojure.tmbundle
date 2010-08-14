@@ -5,6 +5,21 @@
 
 (defonce *compiled-files* (atom #{}))
 
+(defn print-stack-trace [exc]
+  (println (.getMessage exc))
+  (doall (map #(println (.toString %)) (seq (.getStackTrace exc)))))
+  
+(defmacro attempt [& body]
+  `(try
+     (do
+       ~@body)
+     (catch Exception e#
+       (clojure.core/println 
+         (clojure.core/str 
+           "<pre>" 
+           (with-out-str (textmate/print-stack-trace e#)) 
+           "</pre>")))))
+
 (defn filepath->ns-str
   "Convert filepath to ns-str"
   [path]

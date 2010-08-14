@@ -4,12 +4,10 @@
 (require '[clojure.string :as string])
 (require '[clojure.java.io :as io])
 (load-file (str (io/file (bake/*env* "TM_BUNDLE_SUPPORT") "utils.clj")))
-
-(defn my-thing []
-  (inc 1))
-
-(clojure.core/println
-  (clojure.core/str 
-     "<pre>"
-     (textmate/eval-in-file-ns (clojure.core/eval (get-selected-sexpr)))
-     "</pre>"))
+    
+(textmate/attempt
+  (clojure.core/println
+    (clojure.core/str 
+      "<pre>"
+      (textmate/eval-in-file-ns (clojure.core/eval (get-selected-sexpr)))
+      "</pre>")))
