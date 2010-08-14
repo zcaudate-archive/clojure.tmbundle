@@ -5,20 +5,20 @@
 	<key>beforeRunningCommand</key>
 	<string>saveActiveFile</string>
 	<key>command</key>
-	<string>eval.clj</string>
+	<string>eval_last_sexpr.clj</string>
 	<key>fallbackInput</key>
 	<string>none</string>
 	<key>input</key>
 	<string>selection</string>
 	<key>keyEquivalent</key>
-	<string>@X</string>
+	<string>^x</string>
 	<key>name</key>
-	<string>Eval</string>
+	<string>Eval last sexpr</string>
 	<key>output</key>
 	<string>showAsHTML</string>
 	<key>scope</key>
 	<string>source.clojure</string>
 	<key>uuid</key>
-	<string>CB13E6ED-64B4-430F-8177-4456D5232B99</string>
+	<string>CF9DF2CC-2742-44D9-974E-8A520AB4C7CC</string>
 </dict>
 </plist>

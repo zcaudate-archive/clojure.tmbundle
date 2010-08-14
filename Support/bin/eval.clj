@@ -5,10 +5,11 @@
 (require '[clojure.java.io :as io])
 (load-file (str (io/file (bake/*env* "TM_BUNDLE_SUPPORT") "utils.clj")))
 
-(enter-file-ns true) ; if file not loaded enter user ns
+(defn my-thing []
+  (inc 1))
 
 (clojure.core/println
   (clojure.core/str 
-       "<pre>"
-       (clojure.core/eval (clojure.core/read-string (bake/*env* "TM_SELECTED_TEXT")))
-       "</pre>"))
+     "<pre>"
+     (textmate/eval-in-file-ns (clojure.core/eval (get-selected-sexpr)))
+     "</pre>"))
