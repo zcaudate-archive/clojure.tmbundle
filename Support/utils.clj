@@ -126,8 +126,9 @@
 	(let [#^String line (-> "TM_CURRENT_LINE" bake/*env*)
 				index    (last (carret-info))
 				symbol-char? (fn [index] 
-					             (let [c (.charAt line #^int index)]
-												(or (Character/isLetterOrDigit c) (#{\_ \- \/} c))))
+					             (and (< index (.length line)) 
+														(let [c (.charAt line #^int index)]
+					             				(or (Character/isLetterOrDigit c) (#{\_ \. \? \- \/} c)))))
 		    symbol-start
 		       (loop [i index] 
 			       (if (or (= i 0) (not (symbol-char? (dec i))))
@@ -136,4 +137,4 @@
 					 (loop [i index] 
 			       (if (or (= i (inc (.length line))) (not (symbol-char? (inc i)))) 
 								i (recur (inc i))))]
-			(.substring line symbol-start (inc symbol-stop))))
+			(.substring line symbol-start (min (.length line) (inc symbol-stop)))))
