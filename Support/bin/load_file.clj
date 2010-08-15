@@ -9,11 +9,11 @@
   (if (not (= tm-filepath ""))
     (do
       (swap! *compiled-files* conj tm-filepath)
-      (clojure.core/println "<pre>Compiling...")
+      ;(clojure.core/println "<pre>Compiling...")
       (try 
         (do
           (load-file tm-filepath)
-          (clojure.core/println "Compilation finished.</pre>"))
+          (clojure.core/println "<pre>Compilation finished.</pre>"))
         (catch Exception e
           (do 
             (textmate/print-stack-trace e)
