@@ -8,7 +8,7 @@
 		<string>clojure</string>
 	</array>
 	<key>foldingStartMarker</key>
-	<string>^\(def</string>
+	<string>^\(</string>
 	<key>foldingStopMarker</key>
 	<string>^\s*$</string>
 	<key>keyEquivalent</key>

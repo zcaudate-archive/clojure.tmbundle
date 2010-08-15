@@ -73,20 +73,24 @@
         path-to-file (string/replace (bake/*env* "TM_FILEPATH")  user-dir "")]
   path-to-file))
 
+
 (defn carret-info 
   "returns [path line-index column-index] info
    about current location of cursor"
   []
   [(bake/*env* "TM_FILEPATH")
     (dec (Integer/parseInt (bake/*env* "TM_LINE_NUMBER")))
-    (Integer/parseInt (bake/*env* "TM_LINE_INDEX"))])
+    (dec (Integer/parseInt (bake/*env* "TM_COLUMN_NUMBER")))])
+
 
 (defn text-before-carret []
   (let [[path,line-index,column-index] (carret-info)
-        lines (-> path io/reader line-seq)]
+        lines (-> path io/reader line-seq)
+				#^String last-line (nth lines line-index)]
      (apply str
        (apply str (for [l (take line-index lines)] (str l "\n")))
-       (.substring #^String (nth lines line-index) 0 column-index))))
+       (.substring last-line 0 (min column-index (.length last-line))))))
+
 
 (defn text-after-carret []
  (let [[path,line-index,column-index] (carret-info)
@@ -115,3 +119,21 @@
 
 (defn get-enclosing-sexpr [])
 (defn get-current-symbol [])
+
+(defn get-current-symbol-str 
+	"Get the string of the current symbol of the cursor"
+	[]
+	(let [#^String line (-> "TM_CURRENT_LINE" bake/*env*)
+				index    (last (carret-info))
+				symbol-char? (fn [index] 
+					             (let [c (.charAt line #^int index)]
+												(or (Character/isLetterOrDigit c) (#{\_ \- \/} c))))
+		    symbol-start
+		       (loop [i index] 
+			       (if (or (= i 0) (not (symbol-char? (dec i))))
+			 					i (recur (dec i))))
+				symbol-stop
+					 (loop [i index] 
+			       (if (or (= i (inc (.length line))) (not (symbol-char? (inc i)))) 
+								i (recur (inc i))))]
+			(.substring line symbol-start (inc symbol-stop))))

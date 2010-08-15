@@ -5,8 +5,9 @@
 (load-file (str (io/file (bake/*env* "TM_BUNDLE_SUPPORT") "utils.clj")))
 
 (textmate/attempt
-  (println
-    (str
+	#_(println (get-last-sexpr))
+  (clojure.core/println
+    (clojure.core/str
       "<pre>"
-      (eval-in-file-ns (clojure.core/eval (get-last-sexpr)))
+      (textmate/eval-in-file-ns (clojure.core/eval (get-last-sexpr)))
       "</pre>")))
