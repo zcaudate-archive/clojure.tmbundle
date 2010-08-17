@@ -103,6 +103,12 @@
 				</dict>
 				<dict>
 					<key>match</key>
+					<string>#\^\S+</string>
+					<key>name</key>
+					<string>constant.language.typehint.clojure</string>
+				</dict>
+				<dict>
+					<key>match</key>
 					<string>(true|false)</string>
 					<key>name</key>
 					<string>constant.language.boolean.clojure</string>
