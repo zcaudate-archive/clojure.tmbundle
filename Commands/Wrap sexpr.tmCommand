@@ -3,22 +3,22 @@
 <plist version="1.0">
 <dict>
 	<key>beforeRunningCommand</key>
-	<string>nop</string>
+	<string>saveActiveFile</string>
 	<key>command</key>
-	<string>open `jump_to_definition.clj`</string>
-	<key>fallbackInput</key>
-	<string>word</string>
+	<string>#!/usr/bin/env ruby
+t = ENV['TM_SELECTED_TEXT'].gsub("\n+$","")
+print "($1 #{t})$0"</string>
 	<key>input</key>
-	<string>none</string>
+	<string>selection</string>
 	<key>keyEquivalent</key>
-	<string>@J</string>
+	<string>@W</string>
 	<key>name</key>
-	<string>Jump To Definition</string>
+	<string>Wrap sexpr</string>
 	<key>output</key>
-	<string>showAsTooltip</string>
+	<string>insertAsSnippet</string>
 	<key>scope</key>
 	<string>source.clojure</string>
 	<key>uuid</key>
-	<string>FCF29461-95F8-44B3-AD5C-C8AD74A1A3B5</string>
+	<string>C9D4C6DA-F941-4789-AFC2-E74A1E27F6A7</string>
 </dict>
 </plist>

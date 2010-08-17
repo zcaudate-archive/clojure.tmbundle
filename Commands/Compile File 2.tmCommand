@@ -5,20 +5,25 @@
 	<key>beforeRunningCommand</key>
 	<string>nop</string>
 	<key>command</key>
-	<string>open `jump_to_definition.clj`</string>
-	<key>fallbackInput</key>
-	<string>word</string>
+	<string># just to remind you of some useful environment variables
+# see Help / Shell Variables for the full list
+. "${TM_SUPPORT_PATH}/lib/html.sh"
+. "${TM_SUPPORT_PATH}/lib/webpreview.sh"
+
+# Prepare output window.
+html_header 'Compiling File...'
+compile_file.clj</string>
 	<key>input</key>
 	<string>none</string>
 	<key>keyEquivalent</key>
-	<string>@J</string>
+	<string>@K</string>
 	<key>name</key>
-	<string>Jump To Definition</string>
+	<string>Compile File</string>
 	<key>output</key>
-	<string>showAsTooltip</string>
+	<string>showAsHTML</string>
 	<key>scope</key>
 	<string>source.clojure</string>
 	<key>uuid</key>
-	<string>FCF29461-95F8-44B3-AD5C-C8AD74A1A3B5</string>
+	<string>20BCB6E0-E1D4-4B64-8BB3-8B255F159485</string>
 </dict>
 </plist>
