@@ -2,7 +2,7 @@
 (in-ns 'textmate)
 (clojure.core/refer 'clojure.core)
 (require '[clojure.java.io :as io])
-(load-file (str (io/file (bake/*env* "TM_BUNDLE_SUPPORT") "utils.clj")))
+(load-file (str (io/file (cake/*env* "TM_BUNDLE_SUPPORT") "utils.clj")))
 
 (textmate/attempt
 	#_(println (get-last-sexpr))

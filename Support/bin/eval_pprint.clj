@@ -3,7 +3,7 @@
 (clojure.core/refer 'clojure.core)
 (require '[clojure.string :as string])
 (require '[clojure.java.io :as io])
-(load-file (str (io/file (bake/*env* "TM_BUNDLE_SUPPORT") "utils.clj")))
+(load-file (str (io/file (cake/*env* "TM_BUNDLE_SUPPORT") "utils.clj")))
 
 (enter-file-ns)
 
@@ -14,6 +14,6 @@
     (clojure.core/str 
         "<pre>"
         (pprint/with-pprint-dispatch pprint/code-dispatch 
-            (pprint/write (clojure.core/eval (clojure.core/read-string (bake/*env* "TM_SELECTED_TEXT"))) 
+            (pprint/write (clojure.core/eval (clojure.core/read-string (cake/*env* "TM_SELECTED_TEXT"))) 
               :pretty true :stream nil))
         "</pre>")))
