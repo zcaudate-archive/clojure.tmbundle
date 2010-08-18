@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string># just to remind you of some useful environment variables
+# see Help / Shell Variables for the full list
+. "${TM_SUPPORT_PATH}/lib/html.sh"
+. "${TM_SUPPORT_PATH}/lib/webpreview.sh"
+# Prepare output window.
+cd "$TM_PROJECT_DIRECTORY"
+html_header 'Starting Cake...'
+echo `cake start` | perl -ne 's/\n/&lt;br&gt;/g;print;'</string>
+	<key>input</key>
+	<string>selection</string>
+	<key>keyEquivalent</key>
+	<string>@S</string>
+	<key>name</key>
+	<string>Cake Start</string>
+	<key>output</key>
+	<string>showAsHTML</string>
+	<key>scope</key>
+	<string>source.clojure</string>
+	<key>uuid</key>
+	<string>19F476FD-94C6-4CB6-957B-7FD183C10C3B</string>
+</dict>
+</plist>
