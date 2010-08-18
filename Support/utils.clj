@@ -38,7 +38,7 @@
   "Find the namespace of a file; searches for the first ns  (or in-ns) form
    in the file and returns that symbol. Defaults to 'user if one can't be found"
   []
-  (let [forms (-> (bake/*env* "TM_FILEPATH") slurp text-forms)
+  (let [forms (-> (cake/*env* "TM_FILEPATH") slurp text-forms)
         [ns-fn ns] (first (for [f forms :when (and (seq? f) (#{"ns" "in-ns"} (str (first f))))]
                     [(first f) (second f)]))]
     (if ns
@@ -69,8 +69,8 @@
       r#)))
 
 (defn project-relative-src-path []
-   (let [user-dir (str (bake/*env* "TM_PROJECT_DIRECTORY") "/src/")
-        path-to-file (string/replace (bake/*env* "TM_FILEPATH")  user-dir "")]
+   (let [user-dir (str (cake/*env* "TM_PROJECT_DIRECTORY") "/src/")
+        path-to-file (string/replace (cake/*env* "TM_FILEPATH")  user-dir "")]
   path-to-file))
 
 
@@ -78,15 +78,15 @@
   "returns [path line-index column-index] info
    about current location of cursor"
   []
-  [(bake/*env* "TM_FILEPATH")
-    (dec (Integer/parseInt (bake/*env* "TM_LINE_NUMBER")))
-    (dec (Integer/parseInt (bake/*env* "TM_COLUMN_NUMBER")))])
+  [(cake/*env* "TM_FILEPATH")
+    (dec (Integer/parseInt (cake/*env* "TM_LINE_NUMBER")))
+    (dec (Integer/parseInt (cake/*env* "TM_COLUMN_NUMBER")))])
 
 
 (defn text-before-carret []
   (let [[path,line-index,column-index] (carret-info)
         lines (-> path io/reader line-seq)
-				#^String last-line (nth lines line-index)]
+        #^String last-line (nth lines line-index)]
      (apply str
        (apply str (for [l (take line-index lines)] (str l "\n")))
        (.substring last-line 0 (min column-index (.length last-line))))))
@@ -115,7 +115,7 @@
 (defn get-selected-sexpr
   "Get highlighted sexpr"
   []
-  (-> "TM_SELECTED_TEXT" bake/*env* clojure.core/read-string))
+  (-> "TM_SELECTED_TEXT" cake/*env* clojure.core/read-string))
 
 (defn get-enclosing-sexpr [])
 
