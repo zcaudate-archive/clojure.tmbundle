@@ -122,7 +122,7 @@
 (defn get-current-symbol-str 
 	"Get the string of the current symbol of the cursor"
 	[]
-	(let [#^String line (-> "TM_CURRENT_LINE" bake/*env*)
+	(let [#^String line (-> "TM_CURRENT_LINE" cake/*env*)
 				index    (last (carret-info))
 				symbol-char? (fn [index] 
 					             (and (< index (.length line)) 
