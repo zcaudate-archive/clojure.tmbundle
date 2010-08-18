@@ -120,27 +120,25 @@
 (defn get-enclosing-sexpr [])
 
 (defn get-current-symbol-str 
-	"Get the string of the current symbol of the cursor"
-	[]
-	(let [#^String line (-> "TM_CURRENT_LINE" cake/*env*)
-				index    (last (carret-info))
-				symbol-char? (fn [index] 
-					             (and (< index (.length line)) 
-														(let [c (.charAt line #^int index)]
-					             				(or (Character/isLetterOrDigit c) (#{\_ \! \. \? \- \/} c)))))
-		    symbol-start
-		       (loop [i index] 
-			       (if (or (= i 0) (not (symbol-char? (dec i))))
-			 					i (recur (dec i))))
-				symbol-stop
-					 (loop [i index] 
-			       (if (or (= i (inc (.length line))) (not (symbol-char? (inc i)))) 
-								i (recur (inc i))))]
-			(.substring line symbol-start (min (.length line) (inc symbol-stop)))))
-
+  "Get the string of the current symbol of the cursor"
+  []
+  (let [#^String line (-> "TM_CURRENT_LINE" cake/*env*)
+        index    (last (carret-info))
+        symbol-char? (fn [index] 
+                       (and (< index (.length line)) 
+                            (let [c (.charAt line #^int index)]
+                              (or (Character/isLetterOrDigit c) (#{\_ \! \. \? \- \/} c)))))
+        symbol-start
+        (loop [i index] 
+          (if (or (= i 0) (not (symbol-char? (dec i))))
+            i (recur (dec i))))
+        symbol-stop
+        (loop [i index] 
+          (if (or (= i (inc (.length line))) (not (symbol-char? (inc i)))) 
+            i (recur (inc i))))]
+    (.substring line symbol-start (min (.length line) (inc symbol-stop)))))
 
 (defn get-current-symbol 
-	"Get current (selected) symbol. Enters file ns"
-	[]
-	(ns-resolve  (enter-file-ns) (symbol (get-current-symbol-str))))
-
+  "Get current (selected) symbol. Enters file ns"
+  []
+  (ns-resolve  (enter-file-ns) (symbol (get-current-symbol-str))))
