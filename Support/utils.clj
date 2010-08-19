@@ -173,7 +173,7 @@
 (defn get-current-symbol 
   "Get current (selected) symbol. Enters file ns"
   []
-  (ns-resolve  (enter-file-ns) (symbol (get-current-symbol-str))))
+  (ns-resolve  (enter-file-ns) (symbol (get-current-symbol-str))))2
 
 (defn find-last-delim [#^String t]  
   (let [c (last t)] 
@@ -195,16 +195,19 @@
 (defn find-last-sexpr [#^String t]
   (let [t (.trim t)
         d (find-last-delim t)]
+    #_(println "last delim: " d)
     (if (= :symbol d) (get-current-symbol)
-      (first 
-        (for [i (indices-of t (matching-delims d))] 
-          (let [cur (.substring t i)]
-            #_(println cur)
-            (try
-              (let [forms (text-forms cur)]
-                (when (= (count forms) 1)
-                  (first forms)))
-              (catch Exception _ nil))))))))
+      (first         
+        (filter identity
+           (for [i (indices-of t (matching-delims d))] 
+                  (let [cur (.substring t i)]
+                    #_(println "search: " i " " cur)
+                    (try
+                      (let [forms (text-forms cur)]
+                        #_(println "forms: " forms)
+                        (when (= (count forms) 1)
+                          (first forms)))
+                      (catch Exception _ nil)))))))))
                 
 (defn get-last-sexpr 
   "Get last sexpr before carret"
