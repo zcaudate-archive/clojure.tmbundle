@@ -13,7 +13,7 @@
 (textmate/attempt
   (clojure.core/println
     (clojure.core/str 
-       "<pre>" 
+       "<pre>"
        (pprint/with-pprint-dispatch pprint/code-dispatch
          (binding [pprint/*print-suppress-namespaces* true]
           (pprint/write (macro-utils/mexpand-all (read-string (cake/*env* "TM_SELECTED_TEXT")))

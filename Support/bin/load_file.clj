@@ -9,7 +9,7 @@
   (if (not (= tm-filepath ""))
     (do
       (swap! *compiled-files* conj tm-filepath)
-      (try 
+      (try
         (do
           (load-file tm-filepath)
           (clojure.core/println "<pre>Loading finished.</pre>"))

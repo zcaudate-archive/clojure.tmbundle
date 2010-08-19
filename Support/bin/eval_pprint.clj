@@ -11,9 +11,10 @@
 
 (textmate/attempt
   (clojure.core/println
-    (clojure.core/str 
+    (clojure.core/str
         "<pre>"
-        (pprint/with-pprint-dispatch pprint/code-dispatch 
-            (pprint/write (clojure.core/eval (clojure.core/read-string (cake/*env* "TM_SELECTED_TEXT"))) 
+        (pprint/with-pprint-dispatch pprint/code-dispatch
+            (pprint/write (clojure.core/eval 
+              (clojure.core/read-string (cake/*env* "TM_SELECTED_TEXT")))
               :pretty true :stream nil))
         "</pre>")))

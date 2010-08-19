@@ -15,20 +15,19 @@
 
 (defn str-nil [o]
   (if o (str o) "nil"))
-  
+
 (defn escape-quotes [#^String s]
   (-> s
-     (.replaceAll "\"" "\\\"")))  
+     (.replaceAll "\"" "\\\"")))
 
 (defn escape-characters [#^String s]
  (let [#^java.util.regex.Matcher m (.matcher #"\\(\S)" s)]
     (if (.matches m)
       (.replaceAll m "\\\\$1")
-      s)))      
-  
-(defn escape-str [s]
-  (-> s #_escape-characters escape-quotes))  
+      s)))
 
+(defn escape-str [s]
+  (-> s #_escape-characters escape-quotes))
 
 (defn print-stack-trace [exc]
   (println (.getMessage exc))
@@ -39,10 +38,10 @@
      (do
        ~@body)
      (catch Exception e#
-       (clojure.core/println 
-         (clojure.core/str 
-           "<pre>" 
-           (with-out-str (textmate/print-stack-trace e#)) 
+       (clojure.core/println
+         (clojure.core/str
+           "<pre>"
+           (with-out-str (textmate/print-stack-trace e#))
            "</pre>")))))
 
 (defn filepath->ns-str
@@ -62,20 +61,29 @@
 ;(defn push-back-reader-from-path 
 ;  { :tag #^java.io.PushbackReader }
 ;  [#^String path]
-;  (-> path java.io.FileReader. java.io.BufferedReader. java.io.PushbackReader.))
+;  (-> path java.io.FileReader.
+;           java.io.BufferedReader.
+;           java.io.PushbackReader.))
   
 ;(defn read-forms [#^java.io.PushbackReader reader]
 ;  (loop [forms []]
-;    (try 
+;    (try
 ;        (let [form (read reader)]
-;          (cond )))))  
+;          (cond )))))
 
 (defn file-ns
-  "Find the namespace of a file; searches for the first ns  (or in-ns) form
-   in the file and returns that symbol. Defaults to 'user if one can't be found"
+  "Find the namespace of a file; searches for the first ns  (or in-ns)
+   form in the file and returns that symbol. Defaults to 'user if one
+   can't be found"
   []
-  (let [forms (-> (cake/*env* "TM_FILEPATH") slurp text-forms #_push-back-reader-from-path )
-        [ns-fn ns] (first (for [f forms :when (and (seq? f) (#{"ns" "in-ns"} (str (first f))))]
+  (let [forms (-> (cake/*env* "TM_FILEPATH")
+                  slurp
+                  text-forms
+                  #_push-back-reader-from-path)
+        [ns-fn ns] (first
+                      (for [f forms
+                            :when (and (seq? f)
+                                       (#{"ns" "in-ns"} (str (first f))))]
                     [(first f) (second f)]))]
     (if ns
       (if (= (str ns-fn) "ns") ns (eval ns))
@@ -93,7 +101,7 @@
   (let [ns (file-ns)]
     (enter-ns ns)))
 
-(defmacro eval-in-ns 
+(defmacro eval-in-ns
   ""
   [the-ns & forms]
   `(let [old-ns# *ns*]
@@ -101,7 +109,6 @@
     (let [r# ~@forms]
       (enter-ns (-> old-ns# str symbol))
       r#)))
-
 
 (defmacro eval-in-file-ns 
   "For the current file, enter the ns (if any)
@@ -119,15 +126,13 @@
         path-to-file (string/replace (cake/*env* "TM_FILEPATH")  user-dir "")]
   path-to-file))
 
-
-(defn carret-info 
+(defn carret-info
   "returns [path line-index column-index] info
    about current location of cursor"
   []
   [(cake/*env* "TM_FILEPATH")
     (dec (Integer/parseInt (cake/*env* "TM_LINE_NUMBER")))
     (dec (Integer/parseInt (cake/*env* "TM_COLUMN_NUMBER")))])
-
 
 (defn text-before-carret []
   (let [[path,line-index,column-index] (carret-info)
@@ -137,7 +142,6 @@
        (apply str (for [l (take line-index lines)] (str l "\n")))
        (.substring last-line 0 (min column-index (.length last-line))))))
 
-
 (defn text-after-carret []
  (let [[path,line-index,column-index] (carret-info)
        lines (-> path io/reader line-seq)]
@@ -146,27 +150,28 @@
       (apply str (for [l (drop (inc line-index) lines)] (str l "\n"))))))
 
 ;(defn make-cannonical-form-text [t]
-;  (.replaceAll #^String t "\\s+" " "))      
-  
-;(defn str-escape [t]
-;  (.replaceAll #^String t "\\n" "\\n"))  
+;  (.replaceAll #^String t "\\s+" " "))
 
-(defn get-current-symbol-str 
+;(defn str-escape [t]
+;  (.replaceAll #^String t "\\n" "\\n"))
+
+(defn get-current-symbol-str
   "Get the string of the current symbol of the cursor"
   []
   (let [#^String line (-> "TM_CURRENT_LINE" cake/*env* escape-str)
         index    (int (last (carret-info)))
-        symbol-char? (fn [index] 
-                       (and (< index (.length line)) 
+        symbol-char? (fn [index]
+                       (and (< index (.length line))
                             (let [c (.charAt line #^int index)]
-                              (or (Character/isLetterOrDigit c) (#{\_ \! \. \? \- \/} c)))))
+                              (or (Character/isLetterOrDigit c) 
+                                  (#{\_ \! \. \? \- \/} c)))))
         symbol-start
-          (loop [i index] 
+          (loop [i index]
             (if (or (= i 0) (-> i dec symbol-char? not))
               i (recur (dec i))))
         symbol-stop
-          (loop [i index] 
-            (if (or (= i (inc (.length line))) (not (symbol-char? (inc i)))) 
+          (loop [i index]
+            (if (or (= i (inc (.length line))) (not (symbol-char? (inc i))))
               i (recur (inc i))))]
     (.substring line symbol-start (min (.length line) (inc symbol-stop)))))
 
@@ -175,31 +180,32 @@
   []
   (ns-resolve  (enter-file-ns) (symbol (get-current-symbol-str))))2
 
-(defn find-last-delim [#^String t]  
-  (let [c (last t)] 
+(defn find-last-delim [#^String t]
+  (let [c (last t)]
     (cond 
         ((hash-set  \) \] \})  c)  c
         ((hash-set \( \[ \{)  c)
-          (throw (RuntimeException. (str "Not a valid form ending in '" c "'")))
+          (throw (RuntimeException. 
+            (str "Not a valid form ending in '" c "'")))
         :default :symbol)))
-			
+
 (defn indices-of [#^String t #^Character target]
   (reverse (for [[i c] (seq-utils/indexed t)
-          :when (= c target)] i)))      
-					
+          :when (= c target)] i)))
+
 (def matching-delims
   { \) \(
     \] \[
-    \} \{ })          
-			
+    \} \{ })
+
 (defn find-last-sexpr [#^String t]
   (let [t (.trim t)
         d (find-last-delim t)]
     #_(println "last delim: " d)
     (if (= :symbol d) (get-current-symbol)
-      (first         
+      (first
         (filter identity
-           (for [i (indices-of t (matching-delims d))] 
+           (for [i (indices-of t (matching-delims d))]
                   (let [cur (.substring t i)]
                     #_(println "search: " i " " cur)
                     (try
@@ -208,8 +214,8 @@
                         (when (= (count forms) 1)
                           (first forms)))
                       (catch Exception _ nil)))))))))
-                
-(defn get-last-sexpr 
+
+(defn get-last-sexpr
   "Get last sexpr before carret"
   []
   (find-last-sexpr (text-before-carret)))
@@ -220,4 +226,3 @@
   (-> "TM_SELECTED_TEXT" cake/*env* escape-str clojure.core/read-string))
 
 (defn get-enclosing-sexpr [])
-
