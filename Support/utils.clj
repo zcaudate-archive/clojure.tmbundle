@@ -183,8 +183,8 @@
 (defn find-last-delim [#^String t]
   (let [c (last t)]
     (cond 
-        ((hash-set  \) \] \})  c)  c
-        ((hash-set \( \[ \{)  c)
+        ((hash-set \) \] \} \") c)  c
+        ((hash-set \( \[ \{ \") c)
           (throw (RuntimeException. 
             (str "Not a valid form ending in '" c "'")))
         :default :symbol)))
@@ -196,7 +196,8 @@
 (def matching-delims
   { \) \(
     \] \[
-    \} \{ })
+    \} \{
+    \" \" })
 
 (defn find-last-sexpr [#^String t]
   (let [t (.trim t)
