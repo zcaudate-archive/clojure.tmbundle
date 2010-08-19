@@ -7,7 +7,10 @@
 (textmate/attempt
 	#_(println (get-last-sexpr))
   (clojure.core/println
-    (clojure.core/str
       "<pre>"
-      (textmate/eval-in-file-ns (clojure.core/eval (get-last-sexpr)))
-      "</pre>")))
+      (-> (get-last-sexpr)
+          clojure.core/eval
+          textmate/eval-in-file-ns
+          textmate/str-nil
+          #_textmate/htmlize)
+      "</pre>"))

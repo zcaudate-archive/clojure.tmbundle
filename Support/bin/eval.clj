@@ -5,9 +5,15 @@
 (require '[clojure.java.io :as io])
 (load-file (str (io/file (cake/*env* "TM_BUNDLE_SUPPORT") "utils.clj")))
 
+;(clojure.core/println "#" (-> (get-selected-sexpr)) "#")
+
+
 (textmate/attempt
   (clojure.core/println
-    (clojure.core/str 
       "<pre>"
-      (textmate/eval-in-file-ns (clojure.core/eval (get-selected-sexpr)))
-      "</pre>")))
+      (-> (get-selected-sexpr)
+          clojure.core/eval
+          textmate/eval-in-file-ns
+          textmate/str-nil
+          #_textmate/htmlize)
+      "</pre>"))

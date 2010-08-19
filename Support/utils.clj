@@ -5,6 +5,30 @@
 
 (defonce *compiled-files* (atom #{}))
 
+(defn htmlize [#^String text]
+  (-> text
+      (.replaceAll "&"  "&amp;")
+      (.replaceAll "\n" "<br>")
+      (.replaceAll "<"  "&lt;")
+      (.replaceAll ">"  "&gt;")))
+
+(defn str-nil [o]
+  (if o (str o) "nil"))
+  
+(defn escape-quotes [#^String s]
+  (-> s
+     (.replaceAll "\"" "\\\"")))  
+
+(defn escape-characters [#^String s]
+ (let [#^java.util.regex.Matcher m (.matcher #"\\(\S)" s)]
+    (if (.matches m)
+      (.replaceAll m "\\\\$1")
+      s)))      
+  
+(defn escape-str [s]
+  (-> s #_escape-characters escape-quotes))  
+
+
 (defn print-stack-trace [exc]
   (println (.getMessage exc))
   (doall (map #(println (.toString %)) (seq (.getStackTrace exc)))))
@@ -34,11 +58,22 @@
   [t]
   (read-string (str "[" t "]")))
 
+;(defn push-back-reader-from-path 
+;  { :tag #^java.io.PushbackReader }
+;  [#^String path]
+;  (-> path java.io.FileReader. java.io.BufferedReader. java.io.PushbackReader.))
+  
+;(defn read-forms [#^java.io.PushbackReader reader]
+;  (loop [forms []]
+;    (try 
+;        (let [form (read reader)]
+;          (cond )))))  
+
 (defn file-ns
   "Find the namespace of a file; searches for the first ns  (or in-ns) form
    in the file and returns that symbol. Defaults to 'user if one can't be found"
   []
-  (let [forms (-> (cake/*env* "TM_FILEPATH") slurp text-forms)
+  (let [forms (-> (cake/*env* "TM_FILEPATH") slurp text-forms #_push-back-reader-from-path )
         [ns-fn ns] (first (for [f forms :when (and (seq? f) (#{"ns" "in-ns"} (str (first f))))]
                     [(first f) (second f)]))]
     (if ns
@@ -56,6 +91,16 @@
   []
   (let [ns (file-ns)]
     (enter-ns ns)))
+
+(defmacro eval-in-ns 
+  ""
+  [the-ns & forms]
+  `(let [old-ns# *ns*]
+    (enter-ns ~the-ns)
+    (let [r# ~@forms]
+      (enter-ns (-> old-ns# str symbol))
+      r#)))
+
 
 (defmacro eval-in-file-ns 
   "For the current file, enter the ns (if any)
@@ -104,38 +149,67 @@
   
 ;(defn str-escape [t]
 ;  (.replaceAll #^String t "\\n" "\\n"))  
+
+(defn find-last-delim [#^String t]  
+  (let [c (last t)] 
+    (cond 
+        ((hash-set  \) \] \})  c)  c
+        ((hash-set \( \[ \{)  c)
+          (throw (RuntimeException. (str "Not a valid form ending in '" c "'")))
+        :default :symbol)))
+			
+(defn indices-of [#^String t #^Character target]
+  (reverse (for [[i c] (seq-utils/indexed t)
+          :when (= c target)] i)))      
+					
+(def matching-delims
+  { \) \(
+    \] \[
+    \} \{ })          
+			
+(defn find-last-sexpr [#^String t]
+  (let [t (.trim t)
+        d (find-last-delim t)]
+    (if (= :symbol d) (get-current-symbol)
+      (first 
+        (for [i (indices-of t (matching-delims d))] 
+          (let [cur (.substring t i)]
+            #_(println cur)
+            (try
+              (let [forms (text-forms cur)]
+                (when (= (count forms) 1)
+                  (first forms)))
+              (catch Exception _ nil))))))))
                 
 (defn get-last-sexpr 
   "Get last sexpr before carret"
   []
-  (let [last (-> (text-before-carret) text-forms last)]
-   #_(println "Last SEXPR" last)
-   last))
+  (find-last-sexpr (text-before-carret)))
 
 (defn get-selected-sexpr
   "Get highlighted sexpr"
   []
-  (-> "TM_SELECTED_TEXT" cake/*env* clojure.core/read-string))
+  (-> "TM_SELECTED_TEXT" cake/*env* escape-str clojure.core/read-string))
 
 (defn get-enclosing-sexpr [])
 
 (defn get-current-symbol-str 
   "Get the string of the current symbol of the cursor"
   []
-  (let [#^String line (-> "TM_CURRENT_LINE" cake/*env*)
-        index    (last (carret-info))
+  (let [#^String line (-> "TM_CURRENT_LINE" cake/*env* escape-str)
+        index    (int (last (carret-info)))
         symbol-char? (fn [index] 
                        (and (< index (.length line)) 
                             (let [c (.charAt line #^int index)]
                               (or (Character/isLetterOrDigit c) (#{\_ \! \. \? \- \/} c)))))
         symbol-start
-        (loop [i index] 
-          (if (or (= i 0) (not (symbol-char? (dec i))))
-            i (recur (dec i))))
+          (loop [i index] 
+            (if (or (= i 0) (-> i dec symbol-char? not))
+              i (recur (dec i))))
         symbol-stop
-        (loop [i index] 
-          (if (or (= i (inc (.length line))) (not (symbol-char? (inc i)))) 
-            i (recur (inc i))))]
+          (loop [i index] 
+            (if (or (= i (inc (.length line))) (not (symbol-char? (inc i)))) 
+              i (recur (inc i))))]
     (.substring line symbol-start (min (.length line) (inc symbol-stop)))))
 
 (defn get-current-symbol 

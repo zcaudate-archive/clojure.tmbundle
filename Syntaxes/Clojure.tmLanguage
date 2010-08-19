@@ -139,6 +139,12 @@
 				</dict>
 				<dict>
 					<key>match</key>
+					<string>\\\S</string>
+					<key>name</key>
+					<string>constant.character.clojure</string>
+				</dict>
+				<dict>
+					<key>match</key>
 					<string>(\d+)</string>
 					<key>name</key>
 					<string>constant.numeric.decimal.clojure</string>

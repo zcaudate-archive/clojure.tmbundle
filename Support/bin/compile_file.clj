@@ -5,6 +5,7 @@
 (require '[clojure.java.io :as io])
 (load-file (str (io/file (cake/*env* "TM_BUNDLE_SUPPORT") "utils.clj")))
 
+clojure.core/*compile-path*
 (let [tm-filepath (cake/*env* "TM_FILEPATH")]
   (if (not (= tm-filepath ""))
     (do
@@ -12,7 +13,9 @@
       ;(clojure.core/println "<pre>Compiling...")
       (try 
         (let [cur-ns (file-ns)]
-          (compile cur-ns)
+          (eval-in-ns 'clojure.core  
+            (binding [*compile-path* "classes/"] 
+              (compile cur-ns)))
           (clojure.core/println "<pre>Compilation finished.</pre>"))
         (catch Exception e
           (do 
