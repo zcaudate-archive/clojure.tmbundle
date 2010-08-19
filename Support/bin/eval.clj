@@ -5,9 +5,6 @@
 (require '[clojure.java.io :as io])
 (load-file (str (io/file (cake/*env* "TM_BUNDLE_SUPPORT") "utils.clj")))
 
-;(clojure.core/println "#" (-> (get-selected-sexpr)) "#")
-
-
 (textmate/attempt
   (clojure.core/println
       "<pre>"
