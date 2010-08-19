@@ -2,6 +2,7 @@
 (clojure.core/refer 'clojure.core)
 (require '[clojure.string :as string])
 (require '[clojure.java.io :as io])
+(require '[clojure.contrib.seq-utils :as seq-utils])
 
 (defonce *compiled-files* (atom #{}))
 
@@ -150,6 +151,30 @@
 ;(defn str-escape [t]
 ;  (.replaceAll #^String t "\\n" "\\n"))  
 
+(defn get-current-symbol-str 
+  "Get the string of the current symbol of the cursor"
+  []
+  (let [#^String line (-> "TM_CURRENT_LINE" cake/*env* escape-str)
+        index    (int (last (carret-info)))
+        symbol-char? (fn [index] 
+                       (and (< index (.length line)) 
+                            (let [c (.charAt line #^int index)]
+                              (or (Character/isLetterOrDigit c) (#{\_ \! \. \? \- \/} c)))))
+        symbol-start
+          (loop [i index] 
+            (if (or (= i 0) (-> i dec symbol-char? not))
+              i (recur (dec i))))
+        symbol-stop
+          (loop [i index] 
+            (if (or (= i (inc (.length line))) (not (symbol-char? (inc i)))) 
+              i (recur (inc i))))]
+    (.substring line symbol-start (min (.length line) (inc symbol-stop)))))
+
+(defn get-current-symbol 
+  "Get current (selected) symbol. Enters file ns"
+  []
+  (ns-resolve  (enter-file-ns) (symbol (get-current-symbol-str))))
+
 (defn find-last-delim [#^String t]  
   (let [c (last t)] 
     (cond 
@@ -193,26 +218,3 @@
 
 (defn get-enclosing-sexpr [])
 
-(defn get-current-symbol-str 
-  "Get the string of the current symbol of the cursor"
-  []
-  (let [#^String line (-> "TM_CURRENT_LINE" cake/*env* escape-str)
-        index    (int (last (carret-info)))
-        symbol-char? (fn [index] 
-                       (and (< index (.length line)) 
-                            (let [c (.charAt line #^int index)]
-                              (or (Character/isLetterOrDigit c) (#{\_ \! \. \? \- \/} c)))))
-        symbol-start
-          (loop [i index] 
-            (if (or (= i 0) (-> i dec symbol-char? not))
-              i (recur (dec i))))
-        symbol-stop
-          (loop [i index] 
-            (if (or (= i (inc (.length line))) (not (symbol-char? (inc i)))) 
-              i (recur (inc i))))]
-    (.substring line symbol-start (min (.length line) (inc symbol-stop)))))
-
-(defn get-current-symbol 
-  "Get current (selected) symbol. Enters file ns"
-  []
-  (ns-resolve  (enter-file-ns) (symbol (get-current-symbol-str))))

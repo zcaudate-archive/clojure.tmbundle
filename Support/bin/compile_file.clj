@@ -14,8 +14,8 @@ clojure.core/*compile-path*
       (try 
         (let [cur-ns (file-ns)]
           (eval-in-ns 'clojure.core  
-            (binding [*compile-path* "classes/"] 
-              (compile cur-ns)))
+            
+              (compile cur-ns))
           (clojure.core/println "<pre>Compilation finished.</pre>"))
         (catch Exception e
           (do 
