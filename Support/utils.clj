@@ -9,9 +9,9 @@
 (defn htmlize [#^String text]
   (-> text
       (.replaceAll "&"  "&amp;")
-      (.replaceAll "\n" "<br>")
       (.replaceAll "<"  "&lt;")
-      (.replaceAll ">"  "&gt;")))
+      (.replaceAll ">"  "&gt;")
+      (.replaceAll "\n" "<br>")))
 
 (defn str-nil [o]
   (if o (str o) "nil"))
@@ -32,7 +32,7 @@
 (defn print-stack-trace [exc]
   (println (.getMessage exc))
   (doall (map #(println (.toString %)) (seq (.getStackTrace exc)))))
-  
+
 (defmacro attempt [& body]
   `(try
      (do
@@ -203,7 +203,8 @@
   (let [t (.trim t)
         d (find-last-delim t)]
     #_(println "last delim: " d)
-    (if (= :symbol d) (get-current-symbol)
+    (if (= :symbol d) 
+      (get-current-symbol)
       (first
         (filter identity
            (for [i (indices-of t (matching-delims d))]

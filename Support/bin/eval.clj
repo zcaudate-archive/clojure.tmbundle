@@ -12,5 +12,5 @@
           clojure.core/eval
           textmate/eval-in-file-ns
           textmate/str-nil
-          #_textmate/htmlize)
+          textmate/htmlize)
       "</pre>"))

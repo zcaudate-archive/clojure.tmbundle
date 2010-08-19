@@ -14,8 +14,10 @@
   (clojure.core/println
     (clojure.core/str 
        "<pre>"
-       (pprint/with-pprint-dispatch pprint/code-dispatch
-         (binding [pprint/*print-suppress-namespaces* true]
-          (pprint/write (macro-utils/mexpand-all (read-string (cake/*env* "TM_SELECTED_TEXT")))
-            :pretty true :stream nil)))
+       (textmate/htmlize
+         (pprint/with-pprint-dispatch pprint/code-dispatch
+           (binding [pprint/*print-suppress-namespaces* true]
+             (pprint/write (macro-utils/mexpand-all 
+               (read-string (cake/*env* "TM_SELECTED_TEXT")))
+             :pretty true :stream nil))))
        "</pre>")))

@@ -13,8 +13,9 @@
   (clojure.core/println
     (clojure.core/str
         "<pre>"
-        (pprint/with-pprint-dispatch pprint/code-dispatch
+        (textmate/htmlize
+          (pprint/with-pprint-dispatch pprint/code-dispatch
             (pprint/write (clojure.core/eval 
               (clojure.core/read-string (cake/*env* "TM_SELECTED_TEXT")))
-              :pretty true :stream nil))
+              :pretty true :stream nil)))
         "</pre>")))
