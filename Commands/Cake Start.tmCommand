@@ -16,7 +16,7 @@ echo `cake start` | perl -ne 's/\n/&lt;br&gt;/g;print;'</string>
 	<key>input</key>
 	<string>selection</string>
 	<key>keyEquivalent</key>
-	<string>@S</string>
+	<string>@r</string>
 	<key>name</key>
 	<string>Cake Start</string>
 	<key>output</key>
