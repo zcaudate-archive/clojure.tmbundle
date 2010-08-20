@@ -44,14 +44,6 @@
            (with-out-str (textmate/print-stack-trace e#))
            "</pre>")))))
 
-(defn filepath->ns-str
-  "Convert filepath to ns-str"
-  [path]
-  (-> path
-      (string/replace ".clj" "")
-      (string/replace "_" "-")
-      (string/replace "/" ".")))
-
 (defn text-forms
   "Wrap the forms in text t in a vector. Used
   for all the eval functions"
