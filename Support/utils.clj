@@ -2,7 +2,9 @@
 (clojure.core/refer 'clojure.core)
 (require '[clojure.string :as string])
 (require '[clojure.java.io :as io])
+(require '[clojure.stacktrace :as stacktrace])
 (require '[clojure.contrib.seq-utils :as seq-utils])
+(require '[clojure.contrib.pprint :as pprint])
 
 (defonce *compiled-files* (atom #{}))
 
@@ -13,8 +15,14 @@
       (.replaceAll ">"  "&gt;")
       (.replaceAll "\n" "<br>")))
 
+(defn pprint-str [x]
+  (with-out-str (pprint/pprint x)))
+
 (defn str-nil [o]
   (if o (str o) "nil"))
+
+(defn ppstr-nil [o]
+  (if o (pprint-str o) "nil"))
 
 (defn escape-quotes [#^String s]
   (-> s
@@ -29,65 +37,54 @@
 (defn escape-str [s]
   (-> s #_escape-characters escape-quotes))
 
-(defn print-stack-trace [exc]
-  (println (.getMessage exc))
-  (doall (map #(println (.toString %)) (seq (.getStackTrace exc)))))
+; (defn print-stack-trace [exc]
+;   (println (.getMessage exc))
+;   (doall (map #(println (.toString %)) (seq (.getStackTrace exc)))))
 
 (defmacro attempt [& body]
   `(try
      (do
        ~@body)
      (catch Exception e#
-       (clojure.core/println
-         (clojure.core/str
-           "<pre>"
-           (with-out-str (textmate/print-stack-trace e#))
-           "</pre>")))))
+       (clojure.core/println         
+            "<pre>"
+             (with-out-str (.printStackTrace e#))
+            "</pre>"))))
 
-(defn filepath->ns-str
-  "Convert filepath to ns-str"
-  [path]
-  (-> path
-      (string/replace ".clj" "")
-      (string/replace "_" "-")
-      (string/replace "/" ".")))
+(defn reader-empty? [#^java.io.PushbackReader rdr]
+  (let [ch (.read rdr)]
+    (do (.unread rdr ch)
+        (= ch -1))))
 
 (defn text-forms
-  "Wrap the forms in text t in a vector. Used
-  for all the eval functions"
+  "Uses Clojure compiler to return a (lazy) seq of forms from text, 
+   each form which yielded a parsing error returns a nil.
+   If text consists of a single well-formed sexpr, this should 
+   return a single non-nil form."   
   [t]
-  (read-string (str "[" t "]")))
-
-;(defn push-back-reader-from-path 
-;  { :tag #^java.io.PushbackReader }
-;  [#^String path]
-;  (-> path java.io.FileReader.
-;           java.io.BufferedReader.
-;           java.io.PushbackReader.))
-  
-;(defn read-forms [#^java.io.PushbackReader reader]
-;  (loop [forms []]
-;    (try
-;        (let [form (read reader)]
-;          (cond )))))
+  (let [rdr (-> t java.io.StringReader. java.io.PushbackReader.)]
+   (for [_ (repeat nil) :while (not (reader-empty? rdr))]
+      (try (read rdr) (catch Exception _ nil)))))                      
 
 (defn file-ns
   "Find the namespace of a file; searches for the first ns  (or in-ns)
    form in the file and returns that symbol. Defaults to 'user if one
    can't be found"
   []
-  (let [forms (-> (cake/*env* "TM_FILEPATH")
-                  slurp
-                  text-forms
-                  #_push-back-reader-from-path)
-        [ns-fn ns] (first
-                      (for [f forms
-                            :when (and (seq? f)
-                                       (#{"ns" "in-ns"} (str (first f))))]
-                    [(first f) (second f)]))]
+  (let [forms 
+          (-> (cake/*env* "TM_FILEPATH")
+              slurp
+              text-forms)
+        ns-form? 
+          (fn [f] (and (seq? f)                            
+                        (#{"ns" "in-ns"} (str (first f)))))
+        [ns-fn ns] 
+          (first
+            (for [f forms :when (ns-form? f)]
+              [(first f) (second f)]))]
     (if ns
       (if (= (str ns-fn) "ns") ns (eval ns))
-      'user)))
+      'user)))  
 
 (defn enter-ns
   "Enter a ns, wrapped for debugging purposes"
@@ -155,30 +152,34 @@
 ;(defn str-escape [t]
 ;  (.replaceAll #^String t "\\n" "\\n"))
 
+(defn symbol-char?
+  [c]
+  (or (Character/isLetterOrDigit c) (#{\_ \! \. \? \- \/} c))) 
+
 (defn get-current-symbol-str
   "Get the string of the current symbol of the cursor"
   []
   (let [#^String line (-> "TM_CURRENT_LINE" cake/*env* escape-str)
         index    (int (last (carret-info)))
-        symbol-char? (fn [index]
-                       (and (< index (.length line))
-                            (let [c (.charAt line #^int index)]
-                              (or (Character/isLetterOrDigit c) 
-                                  (#{\_ \! \. \? \- \/} c)))))
+        symbol-index?
+          (fn [index]
+            (and (< index (.length line)) 
+                 (let [c (.charAt line index)] (symbol-char? c))))
         symbol-start
           (loop [i index]
-            (if (or (= i 0) (-> i dec symbol-char? not))
+            (if (or (= i 0) (-> i dec symbol-index? not))
               i (recur (dec i))))
-        symbol-stop
+        symbol-stop 
           (loop [i index]
-            (if (or (= i (inc (.length line))) (not (symbol-char? (inc i))))
+            (if (or (= i (inc (.length line))) (not (symbol-index? (inc i))))
               i (recur (inc i))))]
     (.substring line symbol-start (min (.length line) (inc symbol-stop)))))
 
 (defn get-current-symbol 
   "Get current (selected) symbol. Enters file ns"
   []
-  (ns-resolve  (enter-file-ns) (symbol (get-current-symbol-str))))2
+  (ns-resolve  (enter-file-ns) (symbol (get-current-symbol-str))))
+
 
 (defn find-last-delim [#^String t]
   (let [c (last t)]
@@ -201,18 +202,19 @@
 
 (defn find-last-sexpr [#^String t]
   (let [t (.trim t)
-        d (find-last-delim t)]
-    #_(println "last delim: " d)
+        d (find-last-delim t)]        
+    #_(do (println (htmlize (str "Input: " t)))       
+          (println (htmlize (str "last delim: " d))))       
     (if (= :symbol d) 
       (get-current-symbol)
       (first
         (filter identity
            (for [i (indices-of t (matching-delims d))]
                   (let [cur (.substring t i)]
-                    #_(println "search: " i " " cur)
+                    #_(println (htmlize (str "search: " i " " cur)))
                     (try
                       (let [forms (text-forms cur)]
-                        #_(println "forms: " forms)
+                        #_(println (htmlize (str "forms: " forms)))
                         (when (= (count forms) 1)
                           (first forms)))
                       (catch Exception _ nil)))))))))
@@ -220,7 +222,7 @@
 (defn get-last-sexpr
   "Get last sexpr before carret"
   []
-  (find-last-sexpr (text-before-carret)))
+  (-> (text-before-carret) find-last-sexpr))
 
 (defn get-selected-sexpr
   "Get highlighted sexpr"

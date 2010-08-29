@@ -16,6 +16,6 @@
           (clojure.core/println "<pre>Compilation finished.</pre>"))
         (catch Exception e
           (do 
-            (textmate/print-stack-trace e)
+            (stacktrace/print-stack-trace e)
             (clojure.core/println "</pre>")))))
     (clojure.core/println "No file.")))
