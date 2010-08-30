@@ -9,8 +9,8 @@
   (clojure.core/println
       "<pre>"
       (-> (get-selected-sexpr)
-          clojure.core/eval
-          textmate/eval-in-file-ns
-          textmate/str-nil
+          clojure.core/eval          
+          textmate/eval-in-file-ns          
+          textmate/ppstr-nil
           textmate/htmlize)
       "</pre>"))

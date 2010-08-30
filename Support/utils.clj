@@ -37,9 +37,9 @@
 (defn escape-str [s]
   (-> s #_escape-characters escape-quotes))
 
-; (defn print-stack-trace [exc]
-;   (println (.getMessage exc))
-;   (doall (map #(println (.toString %)) (seq (.getStackTrace exc)))))
+(defn print-stack-trace [exc]
+  (println (.getMessage exc))
+  (doall (map #(println (.toString %)) (seq (.getStackTrace exc)))))
 
 (defmacro attempt [& body]
   `(try
@@ -48,7 +48,7 @@
      (catch Exception e#
        (clojure.core/println         
             "<pre>"
-             (with-out-str (.printStackTrace e#))
+             (with-out-str (print-stack-trace (.getCause e#)))
             "</pre>"))))
 
 (defn reader-empty? [#^java.io.PushbackReader rdr]
