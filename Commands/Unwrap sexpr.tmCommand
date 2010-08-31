@@ -3,22 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>beforeRunningCommand</key>
-	<string>saveActiveFile</string>
+	<string>nop</string>
 	<key>command</key>
 	<string>#!/usr/bin/env ruby
 t = ENV['TM_SELECTED_TEXT'].gsub("\n+$","")
-print "($1 #{t})$0"</string>
+t = t[1..	-1]
+print "$0#{t}"</string>
 	<key>input</key>
 	<string>selection</string>
 	<key>keyEquivalent</key>
-	<string>~9</string>
+	<string>~.</string>
 	<key>name</key>
-	<string>Wrap sexpr</string>
+	<string>Unwrap sexpr</string>
 	<key>output</key>
 	<string>insertAsSnippet</string>
 	<key>scope</key>
 	<string>source.clojure</string>
 	<key>uuid</key>
-	<string>C9D4C6DA-F941-4789-AFC2-E74A1E27F6A7</string>
+	<string>DEC67163-4A95-4687-8296-83B89A5A2E98</string>
 </dict>
 </plist>

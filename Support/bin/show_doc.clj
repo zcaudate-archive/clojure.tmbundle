@@ -9,6 +9,9 @@
    (do (when-let [name (-> symb meta :name)]
          (println "<h1>Name</h1>")
          (println name))
+       (when-let [arg-list-str (-> symb meta :arglists)]
+         (println "<h1>Arg Lists</h1>")
+         (println (textmate/htmlize (str arg-list-str))))   
        (when-let [doc-str (-> symb meta :doc)] 
          (println "<h1>Doc</h1>")
          (println (.replaceAll doc-str "\n" "<br>")))
@@ -17,7 +20,7 @@
                   (.replaceAll
                    (.replaceAll (str symb-ns) "<" "&lt;")
                    ">" "&rt;")
-                  "<br>"))
+                  "<br>"))                  
        (when-let [f (-> symb meta :file)]
          (println "<h1>File</h1>")
          (println
@@ -25,8 +28,5 @@
                   (-> symb meta :line)
                   f
                   f
-                  (-> symb meta :line))))
-       #_(when-let [source-txt (ru/get-source symb)]
-           (println "<h1>Source</h1>")
-           (println source-txt)))
+                  (-> symb meta :line)))))
    (println "Couldn't resolve symbol: " (get-current-symbol-str) "<br>")))

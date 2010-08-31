@@ -4,10 +4,9 @@
 (require '[clojure.string :as string])
 (require '[clojure.java.io :as io])
 (load-file (str (io/file (cake/*env* "TM_BUNDLE_SUPPORT") "utils.clj")))
+(clojure.core/require '[clojure.pprint :as pprint])
 
 (enter-file-ns)
-
-(clojure.core/require '[clojure.pprint :as pprint])
 
 (textmate/attempt
   (clojure.core/println
