@@ -1,16 +1,18 @@
 #!/usr/bin/env cake run
-(in-ns 'textmate)
-(clojure.core/refer 'clojure.core)
-(require '[clojure.string :as string])
 (require '[clojure.java.io :as io])
 (load-file (str (io/file (cake/*env* "TM_BUNDLE_SUPPORT") "utils.clj")))
-
-(textmate/attempt
+(in-ns 'textmate)
+(attempt 
   (clojure.core/println
       "<pre>"
+      (get-selected-sexpr)
+      "<br>"
+      "<center>"
       (-> (get-selected-sexpr)
           clojure.core/eval          
           textmate/eval-in-file-ns          
           textmate/ppstr-nil
-          textmate/htmlize)
+          textmate/htmlize
+          .trim)
+      "</center>"    
       "</pre>"))
