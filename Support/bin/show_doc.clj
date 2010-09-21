@@ -2,6 +2,7 @@
 (in-ns 'textmate)
 (clojure.core/require '[clojure.contrib.repl-utils :as ru])
 (clojure.core/require '[clojure.java.io :as io])
+(clojure.core/require '[clojure.repl :as repl])
 (clojure.core/load-file (clojure.core/str (io/file (cake/*env* "TM_BUNDLE_SUPPORT") "utils.clj")))
 
 (textmate/attempt
@@ -17,10 +18,16 @@
          (println (.replaceAll doc-str "\n" "<br>")))
        (when-let [symb-ns (-> symb meta :ns)]
          (println "<h1>Namespace</h1><br>"
-                  (.replaceAll
-                   (.replaceAll (str symb-ns) "<" "&lt;")
-                   ">" "&rt;")
-                  "<br>"))                  
+                 (htmlize (str symb-ns))))
+                  ; #_(.replaceAll
+                  ;  (.replaceAll (str symb-ns) "<" "&lt;")
+                   ; ">" "&rt;")
+                  ; #_"<br>"))  
+       ; (when-let [cur-source (with-out-str (eval-in-file-ns (repl/source-fn (symbol name)))]
+       ;    (println "<h1>Source</h1>"
+       ;             "<pre>"
+       ;             (htmlize cur-source)
+       ;             "</pre>"))                            
        (when-let [f (-> symb meta :file)]
          (println "<h1>File</h1>")
          (println

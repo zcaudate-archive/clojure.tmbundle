@@ -1,12 +1,10 @@
-(in-ns 'textmate)
+(ns textmate
+ (:require [clojure.string :as string]
+           [clojure.java.io :as io]
+           [clojure.stacktrace :as stacktrace]
+           [clojure.contrib.seq-utils :as seq-utils]
+           [clojure.contrib.pprint :as pprint]))
 (clojure.core/refer 'clojure.core)
-(require '[clojure.string :as string])
-(require '[clojure.java.io :as io])
-(require '[clojure.stacktrace :as stacktrace])
-(require '[clojure.contrib.seq-utils :as seq-utils])
-(require '[clojure.contrib.pprint :as pprint])
-
-(defonce *compiled-files* (atom #{}))
 
 (defn htmlize [#^String text]
   (-> text
@@ -48,7 +46,8 @@
      (catch Exception e#
        (clojure.core/println         
             "<pre>"
-             (with-out-str (print-stack-trace (.getCause e#)))
+            "<b>Exception:</b>"
+            (with-out-str (stacktrace/print-stack-trace e#))
             "</pre>"))))
 
 (defn reader-empty? [#^java.io.PushbackReader rdr]
@@ -146,15 +145,9 @@
       (.substring #^String (nth lines line-index) column-index)
       (apply str (for [l (drop (inc line-index) lines)] (str l "\n"))))))
 
-;(defn make-cannonical-form-text [t]
-;  (.replaceAll #^String t "\\s+" " "))
-
-;(defn str-escape [t]
-;  (.replaceAll #^String t "\\n" "\\n"))
-
 (defn symbol-char?
   [c]
-  (or (Character/isLetterOrDigit c) (#{\_ \! \. \? \- \/} c))) 
+  (or (Character/isLetterOrDigit c) ((hash-set \_ \! \. \? \- \/) c))) 
 
 (defn get-current-symbol-str
   "Get the string of the current symbol of the cursor"
@@ -228,5 +221,3 @@
   "Get highlighted sexpr"
   []
   (-> "TM_SELECTED_TEXT" cake/*env* escape-str clojure.core/read-string))
-
-(defn get-enclosing-sexpr [])
