@@ -23,7 +23,8 @@
                   ;  (.replaceAll (str symb-ns) "<" "&lt;")
                    ; ">" "&rt;")
                   ; #_"<br>"))  
-       ; (when-let [cur-source (with-out-str (eval-in-file-ns (repl/source-fn (symbol name)))]
+       ; (println (repl/source-fn (symbol )))
+       ; (when-let [cur-source (repl/source-fn (symbol (str symb)))]
        ;    (println "<h1>Source</h1>"
        ;             "<pre>"
        ;             (htmlize cur-source)

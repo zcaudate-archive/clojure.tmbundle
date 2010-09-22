@@ -45,8 +45,8 @@
        ~@body)
      (catch Exception e#
        (clojure.core/println         
+            "<h1>Exception:</h1>"
             "<pre>"
-            "<b>Exception:</b>"
             (with-out-str (stacktrace/print-stack-trace e#))
             "</pre>"))))
 
@@ -211,6 +211,22 @@
                         (when (= (count forms) 1)
                           (first forms)))
                       (catch Exception _ nil)))))))))
+                      
+(defn display-form-eval [form]
+  (clojure.core/println      
+      "<h1>Form</h1>"
+      "<pre>"(textmate/ppstr-nil form)"</pre>")
+  (clojure.core/println      
+      "<h1>Result</h1>"      
+      "<pre>"
+      (textmate/attempt
+        (-> form
+            clojure.core/eval          
+            textmate/eval-in-file-ns          
+            textmate/ppstr-nil                    
+            textmate/htmlize
+            .trim))
+      "</pre>"))                      
 
 (defn get-last-sexpr
   "Get last sexpr before carret"
