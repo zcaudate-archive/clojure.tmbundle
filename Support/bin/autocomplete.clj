@@ -5,10 +5,10 @@
 (clojure.core/require '[clojure.repl :as repl])
 (clojure.core/load-file (clojure.core/str (io/file (cake/*env* "TM_BUNDLE_SUPPORT") "utils.clj")))
 
-; (println (file-ns) "<br>")
+; (println "symbol:" (get-symbol-to-autocomplete))
 ; (println (ns-refers (file-ns)) "<br>")
 (defn- get-completions []  
-  (let [cur-symbol (get-current-symbol-str)]    
+  (let [cur-symbol (get-symbol-to-autocomplete)]    
     (concat
       (for [s (map (comp str first) (concat (ns-publics (file-ns)) (ns-refers (file-ns))))
             :when (.startsWith s cur-symbol)] s))))

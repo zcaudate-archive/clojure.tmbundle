@@ -149,6 +149,15 @@
   [c]
   (or (Character/isLetterOrDigit c) ((hash-set \_ \! \. \? \- \/) c))) 
 
+(defn get-symbol-to-autocomplete []
+  (let [#^String line (-> "TM_CURRENT_LINE" cake/*env* escape-str)
+        stop    (dec (last (carret-info)))]
+    (loop [index stop]
+      (cond (zero? index) (.substring line 0 stop)
+            (not (symbol-char? (.charAt line index))) (.substring line (inc index) (inc stop))
+            :else (recur (dec index))))))
+        
+
 (defn get-current-symbol-str
   "Get the string of the current symbol of the cursor"
   []
