@@ -12,7 +12,6 @@ require "#{ENV["TM_SUPPORT_PATH"]}/lib/ui"
 command = "#{ENV["TM_BUNDLE_SUPPORT"]}/bin/autocomplete.clj"
 completions = `"#{command}"`.split(" ").to_a
 
-
 if not $?.success?
   TextMate.exit_show_tool_tip "Parse error."
 elsif completions.size == 1
