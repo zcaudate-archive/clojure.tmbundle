@@ -45,11 +45,9 @@
        ~@body)
      (catch Exception e#
        (clojure.core/println         
-            "<pre>"
-            "<b>Exception:</b>"
+            "<h1>Exception:</h1>"
             "<pre>"
             (with-out-str (stacktrace/print-stack-trace e#))
-            "</pre>"
             "</pre>"))))
 
 (defn reader-empty? [#^java.io.PushbackReader rdr]
@@ -215,19 +213,20 @@
                       (catch Exception _ nil)))))))))
                       
 (defn display-form-eval [form]
-  (textmate/attempt
-    (clojure.core/println      
-        "<h1>Form</h1>"
-        "<pre>"(textmate/ppstr-nil form)"</pre>"
-        "<h1>Result</h1>"      
-        "<pre>"
+  (clojure.core/println      
+      "<h1>Form</h1>"
+      "<pre>"(textmate/ppstr-nil form)"</pre>")
+  (clojure.core/println      
+      "<h1>Result</h1>"      
+      "<pre>"
+      (textmate/attempt
         (-> form
             clojure.core/eval          
             textmate/eval-in-file-ns          
             textmate/ppstr-nil                    
             textmate/htmlize
-            .trim)
-        "</pre>")))                      
+            .trim))
+      "</pre>"))                      
 
 (defn get-last-sexpr
   "Get last sexpr before carret"
