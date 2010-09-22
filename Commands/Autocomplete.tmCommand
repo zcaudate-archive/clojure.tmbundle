@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>#!/usr/bin/env ruby -w
+
+require "#{ENV["TM_SUPPORT_PATH"]}/lib/exit_codes"
+require "#{ENV["TM_SUPPORT_PATH"]}/lib/ui"
+command = "#{ENV["TM_BUNDLE_SUPPORT"]}/bin/autocomplete.clj"
+completions = `"#{command}"`.split(" ").to_a
+
+if not $?.success?
+  TextMate.exit_show_tool_tip "Parse error."
+elsif completions.size == 1
+  selected = completions.first
+elsif completions.size &gt; 1
+  selected = completions[TextMate::UI.menu(completions)] rescue exit
+else
+  TextMate.exit_show_tool_tip "No matches were found."
+end
+
+print selected.sub(/\A#{Regexp.escape(ENV['TM_CURRENT_WORD'].to_s)}/, "")
+</string>
+	<key>input</key>
+	<string>none</string>
+	<key>keyEquivalent</key>
+	<string>~</string>
+	<key>name</key>
+	<string>Autocomplete</string>
+	<key>output</key>
+	<string>afterSelectedText</string>
+	<key>scope</key>
+	<string>source.clojure</string>
+	<key>uuid</key>
+	<string>AC23AA5E-3F65-4769-A314-0F603993AC6B</string>
+</dict>
+</plist>
