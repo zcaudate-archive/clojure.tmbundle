@@ -47,7 +47,9 @@
        (clojure.core/println         
             "<pre>"
             "<b>Exception:</b>"
+            "<pre>"
             (with-out-str (stacktrace/print-stack-trace e#))
+            "</pre>"
             "</pre>"))))
 
 (defn reader-empty? [#^java.io.PushbackReader rdr]
@@ -217,7 +219,7 @@
     (clojure.core/println      
         "<h1>Form</h1>"
         "<pre>"(textmate/ppstr-nil form)"</pre>"
-        "<br><h1>Result</h1>"      
+        "<h1>Result</h1>"      
         "<pre>"
         (-> form
             clojure.core/eval          
