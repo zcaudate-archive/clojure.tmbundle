@@ -166,7 +166,11 @@
           (loop [i index]
             (if (or (= i (inc (.length line))) (not (symbol-index? (inc i))))
               i (recur (inc i))))]
-    (.substring line symbol-start (min (.length line) (inc symbol-stop)))))
+    (-> line 
+        (.substring symbol-start (min (.length line) (inc symbol-stop)))
+        (.split "\\s+")
+        first
+        .trim)))
 
 (defn get-current-symbol 
   "Get current (selected) symbol. Enters file ns"

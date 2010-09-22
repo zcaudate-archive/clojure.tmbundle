@@ -19,16 +19,6 @@
        (when-let [symb-ns (-> symb meta :ns)]
          (println "<h1>Namespace</h1><br>"
                  (htmlize (str symb-ns))))
-                  ; #_(.replaceAll
-                  ;  (.replaceAll (str symb-ns) "<" "&lt;")
-                   ; ">" "&rt;")
-                  ; #_"<br>"))  
-       ; (println (repl/source-fn (symbol )))
-       ; (when-let [cur-source (repl/source-fn (symbol (str symb)))]
-       ;    (println "<h1>Source</h1>"
-       ;             "<pre>"
-       ;             (htmlize cur-source)
-       ;             "</pre>"))                            
        (when-let [f (-> symb meta :file)]
          (println "<h1>File</h1>")
          (println
@@ -37,4 +27,5 @@
                   f
                   f
                   (-> symb meta :line)))))
-   (println "Couldn't resolve symbol: " (get-current-symbol-str) "<br>")))
+   (println 
+     (format "Couldn't resolve symbol: %s</br>" (get-current-symbol-str)))))
