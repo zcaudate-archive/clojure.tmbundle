@@ -18,7 +18,7 @@ First you need to install cake.
 
     sudo gem install cake
     
-If you already have cake installed make sure you have at least version 0.4.0.
+If you already have cake installed make sure you have at least version 0.4.16.
 
 Once installed you can create a file and select the Clojure mode. You should first run <code>cake repl</code> at the command line before running any of the Clojure mode commands in order to avoid any weirdness. In general this is the recommended way of working. A quick tutorial follows in the next section.
 
