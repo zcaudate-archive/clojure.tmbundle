@@ -14,7 +14,7 @@ print "$0#{t}"</string>
 	<key>keyEquivalent</key>
 	<string>~.</string>
 	<key>name</key>
-	<string>Unwrap sexpr</string>
+	<string>Unwrap Sexpr</string>
 	<key>output</key>
 	<string>insertAsSnippet</string>
 	<key>scope</key>

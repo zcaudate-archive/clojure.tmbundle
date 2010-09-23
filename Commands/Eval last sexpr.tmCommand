@@ -20,7 +20,7 @@ eval_last_sexpr.clj</string>
 	<key>keyEquivalent</key>
 	<string>^x</string>
 	<key>name</key>
-	<string>Eval last sexpr</string>
+	<string>Eval Last Sexpr</string>
 	<key>output</key>
 	<string>showAsHTML</string>
 	<key>scope</key>
