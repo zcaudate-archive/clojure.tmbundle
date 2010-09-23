@@ -10,7 +10,6 @@
 . "${TM_SUPPORT_PATH}/lib/html.sh"
 . "${TM_SUPPORT_PATH}/lib/webpreview.sh"
 # Prepare output window.
-cd "$TM_PROJECT_DIRECTORY"
 html_header 'Starting Cake...'
 echo `cake start` | perl -ne 's/\n/&lt;br&gt;/g;print;'</string>
 	<key>input</key>
