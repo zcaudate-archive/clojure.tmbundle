@@ -11,8 +11,10 @@
 . "${TM_SUPPORT_PATH}/lib/webpreview.sh"
 
 # Prepare output window.
-html_header 'Clojure Symbol Information'
+html_header 'Show Documentation'
 show_doc.clj</string>
+	<key>fallbackInput</key>
+	<string>word</string>
 	<key>input</key>
 	<string>selection</string>
 	<key>keyEquivalent</key>
@@ -24,6 +26,6 @@ show_doc.clj</string>
 	<key>scope</key>
 	<string>source.clojure</string>
 	<key>uuid</key>
-	<string>B0A431F9-321E-4507-B457-70E07118C709</string>
+	<string>F55C19CD-CD07-4592-A087-D2C3225E2688</string>
 </dict>
 </plist>
