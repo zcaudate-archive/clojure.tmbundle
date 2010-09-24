@@ -1,6 +1,6 @@
 # textmate-clojure
 
-A TextMate bundle providing syntax highlighting and SLIME like interaction for Clojure. Check out the screencast [here](http://blip.tv/file/4160578)
+A TextMate bundle for Clojure. Check out the screencast [here](http://blip.tv/file/4160578)
 
 ## Installation
 
