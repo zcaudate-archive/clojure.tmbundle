@@ -88,7 +88,7 @@ Close the paren and press enter. You are now in the namespace of the file you ar
 
 ### Existing Projects
 
-This bundle works great with your [`lein`](http://github.com/technomancy/leiningen) projects. Just <code>cd</code> into them and run <code>mate</code>. TextMate will load the directory you can just type <code>Command-R</code> and this will start Cake.
+This bundle works great with your [lein](http://github.com/technomancy/leiningen) projects. Just <code>cd</code> into them and run <code>mate</code>. TextMate will load the directory you can just type <code>Command-R</code> and this will start Cake.
 
 ### Available Commands
 
@@ -108,14 +108,14 @@ This bundle works great with your [`lein`](http://github.com/technomancy/leining
 
 ## Hacking & Contributing
 
-This bundle is written almost entirely in Clojure. All commands trigger Clojure scripts which you can find in the bundle under <code>textmate-clojure/Support/bin</code>. Feel free to fork and contribute. There's also a support mailing list here: http://groups.google.com/group/textmate-clojure.
+This bundle is written almost entirely in Clojure. All commands trigger Clojure scripts which you can find in the bundle under <code>textmate-clojure/Support/bin</code>. Feel free to fork and contribute. There's also a support mailing list [here](http://groups.google.com/group/textmate-clojure).
 
 ## Tips
 
 In order to get proper word movement in Clojure you might want to set your Word Characters to <code>_/-.:</code> in the Text Editing tab of the TextMate Preferences window.
 
-For an even more SLIME like experience you could install [`Visor`](http://visor.binaryage.com/) so that switching to the REPL is just a key-stroke away.
+For an even more SLIME like experience you could install [Visor](http://visor.binaryage.com/) so that switching to the REPL is just a key-stroke away.
 
 ## Acknowledgements
 
-This bundle is based on the Based on a previous Clojure bundle by [`stephenroller`](http://github.com/stephenroller/clojure-tmbundle) and [`mmcgrana`](http://github.com/mmcgrana/textmate-clojure).
+This bundle is based on the Based on a previous Clojure bundle by [stephenroller](http://github.com/stephenroller/clojure-tmbundle) and [mmcgrana](http://github.com/mmcgrana/textmate-clojure).
