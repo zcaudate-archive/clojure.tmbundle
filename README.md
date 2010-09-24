@@ -1,8 +1,6 @@
 # textmate-clojure
 
-A TextMate bundle providing syntax highlighting for Clojure.
-
-Based on a previous Clojure bundle by [`stephenroller`](http://github.com/stephenroller/clojure-tmbundle).
+A TextMate bundle providing syntax highlighting and SLIME like interaction for Clojure.
 
 Install with:
 
@@ -20,33 +18,104 @@ First you need to install cake.
     
 If you already have cake installed make sure you have at least version 0.4.17.
 
-Once installed you can create a file and select the Clojure mode. You should first run <code>cake repl</code> at the command line before running any of the Clojure mode commands in order to avoid any weirdness. In general this is the recommended way of working. A quick tutorial follows in the next section.
+## Tutorial
 
-The commands:
+### First steps
 
-* Eval : will evaluate the selected code in the current REPL for the project directory.
-* Eval pprint : like Eval but pretty-pprints the result.
-* Load File : load the entire file into the current REPL.
-* Show Source : shows the source of the selected function in a new window.
-* Macroexpand : macroexpands the selected s-expression.
-* Macroexpand all : fully macroexpands the selected s-expression.
+Once installed you can create and save a new file with the <code>.clj</code> extension. Type the following expression into this new file and place your cursor as indicated:
 
-## REPL Style Development
+<pre>
+(+ 4 5)
+-------^
+</pre>
 
-Coding in Lisp is a very interactive experience. Even if you are used to other languages that have good REPLs (Python, Ruby, Haskell), none are quite as interactive as a competent Lisp REPL.
+Type <code>Control-X</code>. If you haven't saved the file yet, you will be prompted to do so. The first time you run this command it will take several seconds to see a result. This is because the JVM is starting up. After the first time, <code>Control-X</code> will be much, much, much faster.
 
-First launch Terminal.app and run the following in a new window:
+### Projects
+
+Most of the time you won't be working with single files. You'll be working with projects. Let's make a new project:
+
+<pre class="console">
+cake new hello-world
+cd hello-world
+mate .
+</pre>
+
+Change your <code>project.clj</code> to look like the following:
+
+<pre>
+(defproject hello-world "0.0.1-SNAPSHOT"
+  :description "TODO: add summary of your project"
+  :dependencies [[org.clojure/clojure "1.2.0"]
+                 [org.clojure/clojure-contrib "1.2.0"]])
+</pre>
+
+Then from the command line:
+
+<pre class="console">
+cake deps
+</pre>
+
+Create a source file in your <code>src</code> directory called <code>hello-world.clj</code>. Paste this code into there:
+
+<pre>
+(ns hello-world)
+
+(defn hello-world []
+  (println "Hello world!"))
+</pre>
+
+Type <code>Command-Shift-L</code>. This will load your file. You now have a function that you can run. One way is by typing the following and <code>Control-X</code> in the position indicated:
+
+<pre>
+(hello-world)
+-------------^
+</pre>
+
+But this would be ignoring the versatility of Cake's REPL. At the command line from your project directory type:
 
 <pre class="console">
 cake repl
 </pre>
 
-After a couple (or several) seconds you should get a REPL. If you've already run this command once before you should be dropped into a REPL immediately. Only the first time will be slow.
+This will drop you into the same persistent REPL that your project is using, type the following incomplete sexpr and press the <code>Tab</code> key. This should autocomplete the hello-world namespace:
 
-Create a new file and select the Clojure mode in TextMate. Type in the expression <code>(+ 4 5)</code>. Select this and run the Eval command (Command-Shift-X). You should get a new window with the number 9 in it.
+<pre>
+user=> (in-ns 'he
+</pre>
+
+Close the paren and press enter. You are now in the namespace of the file you are currently working on. Running the <code>hello-world</code> fn from here is an exercise left to the reader ;)
+
+### Existing Projects
+
+This bundle works great with your [`lein`](http://github.com/technomancy/leiningen) projects. Just <code>cd</code> into them and run <code>mate</code>. TextMate will load the directory you can just type <code>Command-R</code> and this will start Cake.
+
+### Available Commands
+
+* Cake Start : Start up a persistent REPL
+* Cake Restart : Restart Cake
+* Load File : load the entire file into the current REPL.
+* Eval : will evaluate the selected code in the current REPL for the project directory.
+* Eval Last Sexpr : will evaluate the sexpr immediate before the cursor
+* Wrap Sexpr : wrap the selected sexpr
+* Unwrap Sexpr : unwrap the selected sexpr
+* Autocomplete : autocomplete a partially typed symbol
+* Show Source : shows the source of the selected function in a new window.
+* Show Doc : shows the document of the selected function in a new window.
+* Jump To Definition : jump to the definition of a symbol (currently only works on files not in jars)
+* Macroexpand : macroexpands the selected sexpr.
+* Macroexpand all : fully macroexpands the selected sexpr.
+
+## Hacking & Contributing
+
+This bundle is written almost entirely in Clojure. All commands trigger Clojure scripts which you can find in the bundle under <code>textmate-clojure/Support/bin</code>. Feel free to fork and contribute. There's also a support mailing list here: http://groups.google.com/group/textmate-clojure.
 
 ## Tips
 
 In order to get proper word movement in Clojure you might want to set your Word Characters to <code>_/-.:</code> in the Text Editing tab of the TextMate Preferences window.
 
 For an even more SLIME like experience you could install [`Visor`](http://visor.binaryage.com/) so that switching to the REPL is just a key-stroke away.
+
+## Acknowledgements
+
+This bundle is based on the Based on a previous Clojure bundle by [`stephenroller`](http://github.com/stephenroller/clojure-tmbundle) and [`mmcgrana`](http://github.com/mmcgrana/textmate-clojure).
