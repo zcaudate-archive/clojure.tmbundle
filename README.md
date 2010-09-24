@@ -10,7 +10,7 @@ Install with:
 
 ## Cake Integration
 
-This fork adds quite a few commands via "cake":http://github.com/ninjudd/cake which makes the TextMate experience considerably more "Lispy".
+This fork adds quite a few commands via [cake]:http://github.com/ninjudd/cake which makes the TextMate experience considerably more "Lispy".
 
 First you need to install cake.
 
