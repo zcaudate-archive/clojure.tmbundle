@@ -10,13 +10,13 @@ A TextMate bundle for Clojure. Check out the screencast [here](http://blip.tv/fi
 
 ## Cake Integration
 
-This fork adds quite a few commands via [cake](http://github.com/ninjudd/cake) which makes the TextMate experience considerably more "Lispy".
+This fork adds quite a few commands via [Cake](http://github.com/ninjudd/cake) which makes the TextMate experience considerably more "Lispy".
 
-First you need to install cake.
+First you need to install Cake.
 
     sudo gem install cake
     
-If you already have cake installed make sure you have at least version 0.4.17.
+If you already have Cake installed make sure you have at least version 0.4.17.
 
 ## Tutorial
 
@@ -56,7 +56,7 @@ Then from the command line:
 cake deps
 </pre>
 
-Create a source file in your <code>src</code> directory called <code>hello-world.clj</code>. Paste this code into there:
+Create a source file in your <code>src</code> directory called <code>hello_world.clj</code>. Paste this code into there:
 
 <pre>
 (ns hello-world)
