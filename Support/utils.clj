@@ -36,9 +36,27 @@
   (-> s #_escape-characters escape-quotes))
 
 (defn print-stack-trace [exc]
-  (println (.getMessage exc))
-  (doall (map #(println (.toString %)) (seq (.getStackTrace exc)))))
-
+  (if-let [cause (.getCause exc)]
+    (print-stack-trace cause)
+    (do
+      (println (.getMessage exc))
+      (doall (map #(println (.toString %)) (seq (.getStackTrace exc)))))))
+    
+(defn add-source-links-to-exception-dump 
+  "finds clojure files in stacktrace and adds txtmt links"
+  [exception-dump]
+  (string/replace exception-dump
+    #"\((.*?\.clj):(\d+)\)"
+    (fn [[orig file line-num]]
+      (println file)
+      (let [resource (ClassLoader/getSystemResource file)]
+        (when (not (nil? resource)) (println (.getFile resource)))
+        (if (and (not (nil? resource)) (not (empty? (.getFile resource))))       
+          (format "(<a href=\"txmt://open?line=%s&url=file:///%s\">%s:%s</a>)"
+            line-num (.getFile resource) file  line-num)
+          orig)))))
+  
+  
 (defmacro attempt [& body]
   `(try
      (do
@@ -47,7 +65,7 @@
        (clojure.core/println         
             "<h1>Exception:</h1>"
             "<pre>"
-            (with-out-str (stacktrace/print-stack-trace e#))
+            (add-source-links-to-exception-dump (with-out-str (print-stack-trace e#)))
             "</pre>"))))
 
 (defn reader-empty? [#^java.io.PushbackReader rdr]
@@ -185,6 +203,7 @@
   "Get current (selected) symbol. Enters file ns"
   []
   (ns-resolve  (enter-file-ns) (symbol (get-current-symbol-str))))
+
 
 
 (defn find-last-delim [#^String t]
