@@ -48,9 +48,7 @@
   (string/replace exception-dump
     #"\((.*?\.clj):(\d+)\)"
     (fn [[orig file line-num]]
-      (println file)
       (let [resource (ClassLoader/getSystemResource file)]
-        (when (not (nil? resource)) (println (.getFile resource)))
         (if (and (not (nil? resource)) (not (empty? (.getFile resource))))       
           (format "(<a href=\"txmt://open?line=%s&url=file:///%s\">%s:%s</a>)"
             line-num (.getFile resource) file  line-num)
