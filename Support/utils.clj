@@ -41,26 +41,26 @@
     (do
       (println (.getMessage exc))
       (doall (map #(println (.toString %)) (seq (.getStackTrace exc)))))))
-    
-(defn add-source-links-to-exception-dump 
+
+(defn add-source-links-to-exception-dump
   "finds clojure files in stacktrace and adds txtmt links"
   [exception-dump]
   (string/replace exception-dump
     #"\((.*?\.clj):(\d+)\)"
     (fn [[orig file line-num]]
       (let [resource (ClassLoader/getSystemResource file)]
-        (if (and (not (nil? resource)) (not (empty? (.getFile resource))))       
+        (if (and (not (nil? resource)) (not (empty? (.getFile resource))))
           (format "(<a href=\"txmt://open?line=%s&url=file:///%s\">%s:%s</a>)"
             line-num (.getFile resource) file  line-num)
           orig)))))
-  
-  
+
+
 (defmacro attempt [& body]
   `(try
      (do
        ~@body)
      (catch Exception e#
-       (clojure.core/println         
+       (clojure.core/println
             "<h1>Exception:</h1>"
             "<pre>"
             (add-source-links-to-exception-dump (with-out-str (print-stack-trace e#)))
@@ -72,34 +72,34 @@
         (= ch -1))))
 
 (defn text-forms
-  "Uses Clojure compiler to return a (lazy) seq of forms from text, 
+  "Uses Clojure compiler to return a (lazy) seq of forms from text,
    each form which yielded a parsing error returns a nil.
-   If text consists of a single well-formed sexpr, this should 
-   return a single non-nil form."   
+   If text consists of a single well-formed sexpr, this should
+   return a single non-nil form."
   [t]
   (let [rdr (-> t java.io.StringReader. java.io.PushbackReader.)]
    (for [_ (repeat nil) :while (not (reader-empty? rdr))]
-      (try (read rdr) (catch Exception _ nil)))))                      
+      (try (read rdr) (catch Exception _ nil)))))
 
 (defn file-ns
   "Find the namespace of a file; searches for the first ns  (or in-ns)
    form in the file and returns that symbol. Defaults to 'user if one
    can't be found"
   []
-  (let [forms 
+  (let [forms
           (-> (cake/*shell-env* "TM_FILEPATH")
               slurp
               text-forms)
-        ns-form? 
-          (fn [f] (and (seq? f)                            
+        ns-form?
+          (fn [f] (and (seq? f)
                         (#{"ns" "in-ns"} (str (first f)))))
-        [ns-fn ns] 
+        [ns-fn ns]
           (first
             (for [f forms :when (ns-form? f)]
               [(first f) (second f)]))]
     (if ns
       (if (= (str ns-fn) "ns") ns (eval ns))
-      'user)))  
+      'user)))
 
 (defn enter-ns
   "Enter a ns, wrapped for debugging purposes"
@@ -107,7 +107,7 @@
   #_(println (str "Entering " ns))
   (in-ns ns))
 
-(defn enter-file-ns 
+(defn enter-file-ns
   "Enter the ns of the file"
   []
   (let [ns (file-ns)]
@@ -122,7 +122,7 @@
       (enter-ns (-> old-ns# str symbol))
       r#)))
 
-(defmacro eval-in-file-ns 
+(defmacro eval-in-file-ns
   "For the current file, enter the ns (if any)
   and evaluate the form in that ns, then pop
   back up to the original ns"
@@ -157,13 +157,13 @@
 (defn text-after-carret []
  (let [[path,line-index,column-index] (carret-info)
        lines (-> path io/reader line-seq)]
-    (apply str 
+    (apply str
       (.substring #^String (nth lines line-index) column-index)
       (apply str (for [l (drop (inc line-index) lines)] (str l "\n"))))))
 
 (defn symbol-char?
   [c]
-  (or (Character/isLetterOrDigit c) ((hash-set \_ \! \. \? \- \/) c))) 
+  (or (Character/isLetterOrDigit c) ((hash-set \_ \! \. \? \- \/) c)))
 
 (defn get-symbol-to-autocomplete []
   (let [#^String line (-> "TM_CURRENT_LINE" cake/*shell-env* escape-str)
@@ -172,7 +172,7 @@
       (cond (zero? index) (.substring line 0 stop)
             (not (symbol-char? (.charAt line index))) (.substring line (inc index) (inc stop))
             :else (recur (dec index))))))
-        
+
 
 (defn get-current-symbol-str
   "Get the string of the current symbol of the cursor"
@@ -181,23 +181,23 @@
         index    (int (last (carret-info)))
         symbol-index?
           (fn [index]
-            (and (< index (.length line)) 
+            (and (< index (.length line))
                  (let [c (.charAt line index)] (symbol-char? c))))
         symbol-start
           (loop [i index]
             (if (or (= i 0) (-> i dec symbol-index? not))
               i (recur (dec i))))
-        symbol-stop 
+        symbol-stop
           (loop [i index]
             (if (or (= i (inc (.length line))) (not (symbol-index? (inc i))))
               i (recur (inc i))))]
-    (-> line 
+    (-> line
         (.substring symbol-start (min (.length line) (inc symbol-stop)))
         (.split "\\s+")
         first
         .trim)))
 
-(defn get-current-symbol 
+(defn get-current-symbol
   "Get current (selected) symbol. Enters file ns"
   []
   (ns-resolve  (enter-file-ns) (symbol (get-current-symbol-str))))
@@ -206,10 +206,10 @@
 
 (defn find-last-delim [#^String t]
   (let [c (last t)]
-    (cond 
+    (cond
         ((hash-set \) \] \} \") c)  c
         ((hash-set \( \[ \{ \") c)
-          (throw (RuntimeException. 
+          (throw (RuntimeException.
             (str "Not a valid form ending in '" c "'")))
         :default :symbol)))
 
@@ -225,10 +225,10 @@
 
 (defn find-last-sexpr [#^String t]
   (let [t (.trim t)
-        d (find-last-delim t)]        
-    #_(do (println (htmlize (str "Input: " t)))       
-          (println (htmlize (str "last delim: " d))))       
-    (if (= :symbol d) 
+        d (find-last-delim t)]
+    #_(do (println (htmlize (str "Input: " t)))
+          (println (htmlize (str "last delim: " d))))
+    (if (= :symbol d)
       (get-current-symbol)
       (first
         (filter identity
@@ -241,22 +241,22 @@
                         (when (= (count forms) 1)
                           (first forms)))
                       (catch Exception _ nil)))))))))
-                      
+
 (defn display-form-eval [form]
-  (clojure.core/println      
+  (clojure.core/println
       "<h1>Form</h1>"
       "<pre>"(textmate/ppstr-nil form)"</pre>")
-  (clojure.core/println      
-      "<h1>Result</h1>"      
+  (clojure.core/println
+      "<h1>Result</h1>"
       "<pre>"
       (textmate/attempt
         (-> form
-            clojure.core/eval          
-            textmate/eval-in-file-ns          
-            textmate/ppstr-nil                    
+            clojure.core/eval
+            textmate/eval-in-file-ns
+            textmate/ppstr-nil
             textmate/htmlize
             .trim))
-      "</pre>"))                      
+      "</pre>"))
 
 (defn get-last-sexpr
   "Get last sexpr before carret"
