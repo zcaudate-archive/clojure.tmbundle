@@ -1,6 +1,6 @@
 #!/usr/bin/env cake run
 (require '[clojure.java.io :as io])
-(load-file (str (io/file (cake/*shell-env* "TM_BUNDLE_SUPPORT") "utils.clj")))
+(load-file (str (io/file (cake/*env* "TM_BUNDLE_SUPPORT") "utils.clj")))
 (in-ns 'textmate)
 (clojure.core/require '[clojure.pprint :as pprint])
 
@@ -13,6 +13,6 @@
         (textmate/htmlize
           (pprint/with-pprint-dispatch pprint/code-dispatch
             (pprint/write (clojure.core/eval 
-              (clojure.core/read-string (cake/*shell-env* "TM_SELECTED_TEXT")))
+              (clojure.core/read-string (cake/*env* "TM_SELECTED_TEXT")))
               :pretty true :stream nil)))
         "</pre>")))

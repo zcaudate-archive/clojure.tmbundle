@@ -87,7 +87,7 @@
    can't be found"
   []
   (let [forms
-          (-> (cake/*shell-env* "TM_FILEPATH")
+          (-> (cake/*env* "TM_FILEPATH")
               slurp
               text-forms)
         ns-form?
@@ -134,17 +134,17 @@
       r#)))
 
 (defn project-relative-src-path []
-   (let [user-dir (str (cake/*shell-env* "TM_PROJECT_DIRECTORY") "/src/")
-        path-to-file (string/replace (cake/*shell-env* "TM_FILEPATH")  user-dir "")]
+   (let [user-dir (str (cake/*env* "TM_PROJECT_DIRECTORY") "/src/")
+        path-to-file (string/replace (cake/*env* "TM_FILEPATH")  user-dir "")]
   path-to-file))
 
 (defn carret-info
   "returns [path line-index column-index] info
    about current location of cursor"
   []
-  [(cake/*shell-env* "TM_FILEPATH")
-    (dec (Integer/parseInt (cake/*shell-env* "TM_LINE_NUMBER")))
-    (dec (Integer/parseInt (cake/*shell-env* "TM_COLUMN_NUMBER")))])
+  [(cake/*env* "TM_FILEPATH")
+    (dec (Integer/parseInt (cake/*env* "TM_LINE_NUMBER")))
+    (dec (Integer/parseInt (cake/*env* "TM_COLUMN_NUMBER")))])
 
 (defn text-before-carret []
   (let [[path,line-index,column-index] (carret-info)
@@ -166,7 +166,7 @@
   (or (Character/isLetterOrDigit c) ((hash-set \_ \! \. \? \- \/) c)))
 
 (defn get-symbol-to-autocomplete []
-  (let [#^String line (-> "TM_CURRENT_LINE" cake/*shell-env* escape-str)
+  (let [#^String line (-> "TM_CURRENT_LINE" cake/*env* escape-str)
         stop    (dec (last (carret-info)))]
     (loop [index stop]
       (cond (zero? index) (.substring line 0 stop)
@@ -177,7 +177,7 @@
 (defn get-current-symbol-str
   "Get the string of the current symbol of the cursor"
   []
-  (let [#^String line (-> "TM_CURRENT_LINE" cake/*shell-env* escape-str)
+  (let [#^String line (-> "TM_CURRENT_LINE" cake/*env* escape-str)
         index    (int (last (carret-info)))
         symbol-index?
           (fn [index]
@@ -266,4 +266,4 @@
 (defn get-selected-sexpr
   "Get highlighted sexpr"
   []
-  (-> "TM_SELECTED_TEXT" cake/*shell-env* escape-str clojure.core/read-string))
+  (-> "TM_SELECTED_TEXT" cake/*env* escape-str clojure.core/read-string))

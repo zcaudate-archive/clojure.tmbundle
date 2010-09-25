@@ -1,6 +1,6 @@
 #!/usr/bin/env cake run
 (require '[clojure.java.io :as io])
-(load-file (str (io/file (cake/*shell-env* "TM_BUNDLE_SUPPORT") "utils.clj")))
+(load-file (str (io/file (cake/*env* "TM_BUNDLE_SUPPORT") "utils.clj")))
 (in-ns 'textmate)
 
 (when-let [symb	 (get-current-symbol)]
@@ -10,4 +10,4 @@
               line 
               (if (.startsWith file "/") 
                 file 
-                (str (cake/*shell-env* "TM_PROJECT_DIRECTORY") "/src/" file))))))
+                (str (cake/*env* "TM_PROJECT_DIRECTORY") "/src/" file))))))

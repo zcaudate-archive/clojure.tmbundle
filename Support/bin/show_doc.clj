@@ -3,7 +3,7 @@
 (clojure.core/require '[clojure.contrib.repl-utils :as ru])
 (clojure.core/require '[clojure.java.io :as io])
 (clojure.core/require '[clojure.repl :as repl])
-(clojure.core/load-file (clojure.core/str (io/file (cake/*shell-env* "TM_BUNDLE_SUPPORT") "utils.clj")))
+(clojure.core/load-file (clojure.core/str (io/file (cake/*env* "TM_BUNDLE_SUPPORT") "utils.clj")))
 
 (textmate/attempt
  (if-let [symb (get-current-symbol)]
