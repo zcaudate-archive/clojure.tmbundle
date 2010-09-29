@@ -1657,7 +1657,7 @@
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>(?&lt;![*+!_?\-])\b(monitor-enter|monitor-exit|assoc|touch|drop|take|concat|prn|into|cons|first|rest|frest|rrest|second|lazy-cat|lazy-cons|conj|await|range|iterate)\b(?![*+!_?\-])</string>
+					<string>(?&lt;![*+!_?\-])\b(monitor-enter|monitor-exit|assoc|touch|drop|take|concat|prn|into|cons|first|flatten|rest|frest|rrest|second|lazy-cat|lazy-cons|conj|await|range|iterate)\b(?![*+!_?\-])</string>
 					<key>name</key>
 					<string>keyword.other.clojure</string>
 				</dict>
@@ -1669,7 +1669,7 @@
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>(?&lt;![*+!_?\-])\b(-&gt;|\.\.|amap|and|areduce|assert|binding|comment|cond|definline|defmatch|defmethod|defmulti|defn|defn-|defonce|defstruct|delay|doc|doseq|dosync|dotimes|doto|fn|for|if-let|lazy-cons|let|locking|loop|memfn|ns|or|prefer-method|proxy-super|proxy|refer-clojure|remove-method|sync|time|when-first|when-let|when-not|when|while|with-in-str|with-local-vars|with-open|with-out-str|with-precision|memoize)\b(?![*+!_?\-])</string>
+					<string>(?&lt;![*+!_?\-])\b(-&gt;|\.\.|amap|and|areduce|assert|binding|comment|cond|definline|(def[a-z\-]*)|defmatch|defmethod|defmulti|defn|defn-|defonce|defstruct|delay|doc|doseq|dosync|dotimes|doto|fn|for|if-let|lazy-cons|let|locking|loop|memfn|ns|or|prefer-method|proxy-super|proxy|refer-clojure|remove-method|sync|time|when-first|when-let|when-not|when|while|with-in-str|with-local-vars|with-open|with-out-str|with-precision|memoize)\b(?![*+!_?\-])</string>
 					<key>name</key>
 					<string>support.function.match.clojure</string>
 				</dict>
