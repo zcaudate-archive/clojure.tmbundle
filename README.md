@@ -1,12 +1,18 @@
 # textmate-clojure
 
-A TextMate bundle for Clojure. Check out the screencast [here](http://blip.tv/file/4160578)
+A TextMate bundle for Clojure. Check out the screencast [here](http://blip.tv/file/4160578).
 
 ## Installation
+
+This bundle has only been tested with Clojure 1.2.0, though we'd love to hear experience reports about 1.1.0.
 
     $ cd ~/Library/Application\ Support/TextMate/Bundles
     $ git clone git://github.com/swannodette/textmate-clojure.git Clojure.tmbundle
     $ osascript -e 'tell app "TextMate" to reload bundles'
+
+## RVM Issues
+
+If you are using RVM it is important to follow the TextMate integration instructions pretty closely. More details of the issues on this [thread](http://groups.google.com/group/textmate-clojure/browse_thread/thread/7d42a13f50c98fdd)
 
 ## Cake Integration
 
@@ -16,7 +22,7 @@ First you need to install Cake.
 
     sudo gem install cake
     
-If you already have Cake installed make sure you have at least version 0.4.18.
+If you already have Cake installed make sure you have at least version 0.5.4.
 
 ## Tutorial
 
