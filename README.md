@@ -22,7 +22,7 @@ First you need to install Cake.
 
     sudo gem install cake
     
-If you already have Cake installed make sure you have at least version 0.5.4.
+If you already have Cake installed make sure you have at least version 0.5.6.
 
 ## Tutorial
 
