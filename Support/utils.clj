@@ -167,11 +167,16 @@
 
 (defn get-symbol-to-autocomplete []
   (let [#^String line (-> "TM_CURRENT_LINE" cake/*env* escape-str)
-        stop    (dec (last (carret-info)))]
-    (loop [index stop]
-      (cond (zero? index) (.substring line 0 stop)
-            (not (symbol-char? (.charAt line index))) (.substring line (inc index) (inc stop))
-            :else (recur (dec index))))))
+        stop (dec (last (carret-info)))]
+    #_(println (carret-info))
+    (loop [index stop]            
+      (let [ch (.charAt line index)]
+        #_(println "index:" index "char:" ch"<br>")
+        (cond 
+            (zero? index) (.trim (.substring line 0 (inc stop)))
+            (or (nil? ch) (not (symbol-char? (.charAt line index))))                                 
+              (.trim (.substring line (inc index) (inc stop)))
+            :else (recur (dec index)))))))
 
 
 (defn get-current-symbol-str
