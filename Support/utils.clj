@@ -3,7 +3,9 @@
            [clojure.java.io :as io]
            [clojure.stacktrace :as stacktrace]
            [clojure.contrib.seq-utils :as seq-utils]
-           [clojure.contrib.pprint :as pprint]))
+           [clojure.contrib.pprint :as pprint])
+ (:import (java.io PushbackReader StringReader)))
+
 (clojure.core/refer 'clojure.core)
 
 (defn htmlize [#^String text]
@@ -258,7 +260,19 @@
   []
   (-> (text-before-carret) find-last-sexpr))
 
-(defn get-selected-sexpr
-  "Get highlighted sexpr"
-  []
-  (-> "TM_SELECTED_TEXT" cake/*env* escape-str clojure.core/read-string))
+(defn read-sexprs
+  "Extracts a vector of the sexprs in string s. If last sexpr is malformed throws an exception."
+  [#^String s]
+  (let [sentinel (Object.)
+        reader (-> s StringReader. PushbackReader.)
+        read-next #(read reader false sentinel)]
+       (loop [sexprs []
+              next (read-next)]
+              (if (= next sentinel)
+                  sexprs
+                  (recur (conj sexprs next) (read-next))))))
+
+(defn get-selected-sexprs
+    "Get highlighted sexprs"
+    []
+    (-> "TM_SELECTED_TEXT" cake/*env* escape-str read-sexprs))
