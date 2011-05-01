@@ -263,12 +263,11 @@
 (defn read-sexprs
   "Extracts a vector of the sexprs in string s. If last sexpr is malformed throws an exception."
   [#^String s]
-  (let [sentinel (Object.)
-        reader (-> s StringReader. PushbackReader.)
-        read-next #(read reader false sentinel)]
+  (let [reader (-> s StringReader. PushbackReader.)
+        read-next #(read reader false ::done)]
        (loop [sexprs []
               next (read-next)]
-              (if (= next sentinel)
+              (if (identical? next ::done)
                   sexprs
                   (recur (conj sexprs next) (read-next))))))
 
