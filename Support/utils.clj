@@ -261,16 +261,11 @@
   (-> (text-before-carret) find-last-sexpr))
 
 (defn read-sexprs
-  "Extracts a vector of the sexprs in string s. If last sexpr is malformed throws an exception."
-  [#^String s]
-  (let [reader (-> s StringReader. PushbackReader.)
-        read-next #(read reader false ::done)]
-       (loop [sexprs []
-              next (read-next)]
-              (if (identical? next ::done)
-                  sexprs
-                  (recur (conj sexprs next) (read-next))))))
-
+  "Returns a realized sequence of the sexprs in string s. If last sexpr is malformed throws an exception."
+  [s]
+  (let [reader (-> s StringReader. PushbackReader.)]
+      (doall (take-while #(not= % ::done) (repeatedly #(read reader false ::done))))))
+      
 (defn get-selected-sexprs
     "Get highlighted sexprs"
     []
