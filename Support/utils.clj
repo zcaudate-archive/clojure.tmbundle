@@ -257,10 +257,6 @@
           "<pre>"
           (add-source-links-to-exception-dump (with-out-str (print-stack-trace e)))
           "</pre>"))
-
-(defn display-form-eval [& forms]
-	(doseq [form forms]
-		(display-result form (-> form eval-in-file-ns))))
 			
 (defn save-eval-in-file-ns [form]
 	(try 
@@ -270,7 +266,7 @@
 	
 (defn is-error? [value]
 	(and (vector? value) (= ::error (first value))))
-		
+
 ; I've tried to do it functionally using split-with but as evaluation has
 ; side effects and the combination split-with and map didn't work.
 (defn display-last-eval [forms]
