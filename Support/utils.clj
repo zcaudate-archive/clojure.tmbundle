@@ -240,20 +240,49 @@
                           (first forms)))
                       (catch Exception _ nil)))))))))
 
-(defn display-form-eval [form]
-  (clojure.core/println
-      "<h1>Form</h1>"
-      "<pre>"(textmate/ppstr-nil form)"</pre>")
-  (clojure.core/println
-      "<h1>Result</h1>"
-      "<pre>"
-      (textmate/attempt
-        (-> form
-            textmate/eval-in-file-ns
-            textmate/ppstr-nil
-            textmate/htmlize
-            .trim))
-      "</pre>"))
+(defn display-result [form result]
+	(clojure.core/println
+	      "<h1>Form</h1>"
+	      "<pre>"(-> form ppstr-nil)"</pre>")
+	(clojure.core/println
+	      "<h1>Result</h1>"
+	      "<pre>"(-> result ppstr-nil htmlize .trim)"</pre>"))
+
+(defn display-error [form e]
+	(clojure.core/println
+	      "<h1>Form</h1>"
+	      "<pre>"(-> form ppstr-nil)"</pre>")
+	(clojure.core/println
+          "<h1>Exception:</h1>"
+          "<pre>"
+          (add-source-links-to-exception-dump (with-out-str (print-stack-trace e)))
+          "</pre>"))
+
+(defn display-form-eval [& forms]
+	(doseq [form forms]
+		(display-result form (-> form eval-in-file-ns))))
+			
+(defn save-eval-in-file-ns [form]
+	(try 
+		(-> form eval-in-file-ns)
+		(catch Exception e 
+			[::error e])))
+	
+(defn is-error? [value]
+	(and (vector? value) (= ::error (first value))))
+		
+; I've tried to do it functionally using split-with but as evaluation has
+; side effects and the combination split-with and map didn't work.
+(defn display-last-eval [forms]
+	(loop [forms forms
+		   last-ok-form nil
+		   last-ok-val  nil]
+		(if (empty? forms)
+			(display-result last-ok-form last-ok-val)
+			(let [value (save-eval-in-file-ns (first forms))]
+				(if (is-error? value)
+					(display-error (first forms) (second value))
+					(recur (rest forms) (first forms) value))))))
 
 (defn get-last-sexpr
   "Get last sexpr before carret"
