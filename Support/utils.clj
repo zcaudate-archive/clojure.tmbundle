@@ -2,8 +2,7 @@
  (:require [clojure.string :as string]
            [clojure.java.io :as io]
            [clojure.stacktrace :as stacktrace]
-           [clojure.contrib.seq-utils :as seq-utils]
-           [clojure.contrib.pprint :as pprint])
+           [clojure.pprint :as pprint])
  (:import (java.io PushbackReader StringReader)))
 
 (clojure.core/refer 'clojure.core)
@@ -212,7 +211,7 @@
         :default :symbol)))
 
 (defn indices-of [#^String t #^Character target]
-	(reverse (for [[i c] (seq-utils/indexed t)
+	(reverse (for [[i c] (map-indexed #(vector %1 %2) t)
 					:when (= c target)]
 					(if (and (= c \{)
 							 (> i 0)
