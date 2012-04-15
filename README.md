@@ -6,8 +6,8 @@ A TextMate bundle for Clojure. Check out the screencast [here](http://blip.tv/fi
 
 This bundle has only been tested with Clojure 1.2.0, though we'd love to hear experience reports about 1.1.0.
 
-    $ cd ~/Library/Application\ Support/TextMate/Bundles
-    $ git clone git://github.com/swannodette/textmate-clojure.git Clojure.tmbundle
+    $ cd /Applications/TextMate.app/Contents/SharedSupport/Bundles
+    $ git clone git://github.com/mmcgrana/textmate-clojure.git Clojure.tmbundle
     $ osascript -e 'tell app "TextMate" to reload bundles'
 
 ## RVM Issues
