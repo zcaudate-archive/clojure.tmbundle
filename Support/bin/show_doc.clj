@@ -1,4 +1,4 @@
-#!/usr/bin/env cake run
+#!/usr/bin/env cake eval-file
 (in-ns 'textmate)
 (clojure.core/require '[clojure.java.io :as io])
 (clojure.core/require '[clojure.repl :as repl])
